@@ -35,9 +35,6 @@ export default defineConfig([
   ...tseslint.configs.recommended,
   {
     rules: {
-      // Prettier integration rules
-      "prettier/prettier": "warn",
-
       // File Naming
       "unicorn/filename-case": [
         "error",
