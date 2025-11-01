@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,7 +12,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authApi } from "@/lib/api/auth/auth";
-import { useRouter } from "next/navigation";
 import { authStore } from "@/stores/auth/authStore";
 
 const FormSchema = z.object({
@@ -37,7 +38,7 @@ export function LoginForm() {
     if (response.success) {
       setEmail(data.email);
       toast.success("Login successful!");
-      //Await 500 milliseconds to show the toast before redirecting
+      // Await 500 milliseconds to show the toast before redirecting
       Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));
       // Handle successful login (e.g., redirect, update state)
       router.push("/user");
