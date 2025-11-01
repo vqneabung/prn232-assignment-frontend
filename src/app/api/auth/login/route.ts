@@ -1,5 +1,3 @@
-import { BaseResponse } from "@/types/type";
-
 export async function POST(req: Request) {
     const { email, password } = await req.json();
 
@@ -9,5 +7,4 @@ export async function POST(req: Request) {
     } else {
         return new Response(JSON.stringify({}), { status: 401 });
     }
-
 }

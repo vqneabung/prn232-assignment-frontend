@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authApi } from "@/lib/api/auth/auth";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -17,6 +19,8 @@ const FormSchema = z.object({
 });
 
 export function LoginForm() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -27,13 +31,16 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    const response = await authApi.login(data.email, data.password);
+    if (response.success) {
+      toast.success("Login successful!");
+      //Await 500 milliseconds to show the toast before redirecting
+      Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));
+      // Handle successful login (e.g., redirect, update state)
+      router.push("/user");
+    } else {
+      toast.error(`Login failed: ${response.message || "Unknown error"}`);
+    }
   };
 
   return (
