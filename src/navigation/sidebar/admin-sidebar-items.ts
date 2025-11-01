@@ -43,7 +43,7 @@ export interface NavGroup {
   items: NavMainItem[];
 }
 
-export const sidebarItems: NavGroup[] = [
+export const AdminSidebarItems: NavGroup[] = [
   {
     id: 1,
     label: "Dashboards",
