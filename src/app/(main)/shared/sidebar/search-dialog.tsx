@@ -44,7 +44,7 @@ export function SearchDialog() {
     <>
       <Button
         variant="link"
-        className="text-muted-foreground !px-0 font-normal hover:no-underline"
+        className="text-muted-foreground px-0! font-normal hover:no-underline"
         onClick={() => setOpen(true)}
       >
         <Search className="size-4" />
@@ -64,7 +64,7 @@ export function SearchDialog() {
                 {searchItems
                   .filter((item) => item.group === group)
                   .map((item) => (
-                    <CommandItem className="!py-1.5" key={item.label} onSelect={() => setOpen(false)}>
+                    <CommandItem className="py-1.5!" key={item.label} onSelect={() => setOpen(false)}>
                       {item.icon && <item.icon />}
                       <span>{item.label}</span>
                     </CommandItem>
