@@ -4,3 +4,8 @@ export interface BaseResponse {
   errors: string[] | null;
   data?: any;
 }
+
+export type Auth = {
+  email: string;
+  setEmail: (email: string) => void;
+};

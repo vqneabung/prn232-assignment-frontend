@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { authApi } from "@/lib/api/auth/auth";
 import { useRouter } from "next/navigation";
+import { authStore } from "@/stores/auth/authStore";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -20,6 +21,7 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const { setEmail } = authStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -33,6 +35,7 @@ export function LoginForm() {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     const response = await authApi.login(data.email, data.password);
     if (response.success) {
+      setEmail(data.email);
       toast.success("Login successful!");
       //Await 500 milliseconds to show the toast before redirecting
       Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));

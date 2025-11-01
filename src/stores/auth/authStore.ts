@@ -1,7 +1,9 @@
 import { create } from "zustand";
 
-export const authStore = create((set) => ({
+import { Auth } from "@/types/type";
+
+export const authStore = create<Auth>()((set) => ({
   email: "",
-  setEmail: (email: string) => set({ email }),
+    setEmail: (email: string) => set({ email }),
 }));
 

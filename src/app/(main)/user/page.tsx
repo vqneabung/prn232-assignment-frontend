@@ -1,3 +1,9 @@
+"use client"
+
+import { authStore } from "@/stores/auth/authStore";
+
 export default function Page() {
-  return <>Coming Soon</>;
+  const { email } = authStore();
+
+  return <>Hello {email}</>;
 }
