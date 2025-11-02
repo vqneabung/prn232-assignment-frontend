@@ -50,7 +50,7 @@ export const UserSidebarItems: NavGroup[] = [
     items: [
       {
         title: "Grade",
-        url: "/user/grade",
+        url: "/user/grade/list",
         icon: LayoutDashboard,
       },
       {

@@ -6,7 +6,7 @@ import { ViolationRecord, ViolationType, ViolationDetail } from "./types";
  */
 export function generateMockViolations(fileName: string): ViolationRecord[] {
   // Parse student info from filename (e.g., "NguyenVanA_21IT001_ClassA.zip")
-  const parts = fileName.replace(/\.[^/.]+$/, "").split("_");
+  fileName.replace(/\.[^/.]+$/, "").split("_");
   
   const mockRecords: ViolationRecord[] = [];
   
@@ -66,15 +66,18 @@ function generateRandomViolations(): ViolationDetail[] {
  * Get human-readable message for violation type
  */
 function getViolationMessage(type: ViolationType): string {
-  const messages: Record<ViolationType, string> = {
-    incorrect_filename: "Tên file không tuân theo định dạng quy định",
-    invalid_naming_convention: "Biến/hàm không tuân theo camelCase hoặc snake_case",
-    source_code_duplicate: "Phát hiện 85% tương đồng với bài nộp khác",
-    suspicious_code_pattern: "Mẫu mã không phù hợp với yêu cầu",
-    missing_documentation: "Thiếu comment hoặc tài liệu trong code",
-  };
-  
-  return messages[type];
+  switch (type) {
+    case "incorrect_filename":
+      return "Tên file không tuân theo định dạng quy định";
+    case "invalid_naming_convention":
+      return "Biến/hàm không tuân theo camelCase hoặc snake_case";
+    case "source_code_duplicate":
+      return "Phát hiện 85% tương đồng với bài nộp khác";
+    case "suspicious_code_pattern":
+      return "Mẫu mã không phù hợp với yêu cầu";
+    case "missing_documentation":
+      return "Thiếu comment hoặc tài liệu trong code";
+  }
 }
 
 /**
