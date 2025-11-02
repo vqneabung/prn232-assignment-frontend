@@ -49,43 +49,19 @@ export const UserSidebarItems: NavGroup[] = [
     label: "Scoring",
     items: [
       {
-        title: "Default",
-        url: "/dashboard/default",
+        title: "Grade",
+        url: "/user/grade",
         icon: LayoutDashboard,
       },
       {
         title: "CRM",
-        url: "/dashboard/crm",
+        url: "/user/crm",
         icon: ChartBar,
       },
       {
         title: "Finance",
-        url: "/dashboard/finance",
+        url: "/user/finance",
         icon: Banknote,
-      },
-      {
-        title: "Analytics",
-        url: "/dashboard/coming-soon",
-        icon: Gauge,
-        comingSoon: true,
-      },
-      {
-        title: "E-commerce",
-        url: "/dashboard/coming-soon",
-        icon: ShoppingBag,
-        comingSoon: true,
-      },
-      {
-        title: "Academy",
-        url: "/dashboard/coming-soon",
-        icon: GraduationCap,
-        comingSoon: true,
-      },
-      {
-        title: "Logistics",
-        url: "/dashboard/coming-soon",
-        icon: Forklift,
-        comingSoon: true,
       },
     ],
   },

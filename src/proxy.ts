@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { authStore } from "./stores/auth/authStore";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const { email } = authStore.getState();
 
