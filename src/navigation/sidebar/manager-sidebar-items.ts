@@ -1,8 +1,7 @@
 import {
-  ShieldAlert,
   LayoutDashboard,
-  MessageCircle,
-  CheckCircle2,
+  UserCheck,
+  AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -31,36 +30,31 @@ export interface NavGroup {
   items: NavMainItem[];
 }
 
-export const ModeratorSidebarItems: NavGroup[] = [
+export const ManagerSidebarItems: NavGroup[] = [
   {
     id: 1,
     label: "Main",
     items: [
       {
         title: "Dashboard",
-        url: "/moderator",
+        url: "/manager",
         icon: LayoutDashboard,
       },
     ],
   },
   {
     id: 2,
-    label: "Monitoring",
+    label: "Operations",
     items: [
       {
-        title: "Detect Violations",
-        url: "/moderator/detect/violations",
-        icon: ShieldAlert,
+        title: "Examiner Assignment",
+        url: "/manager/assignment",
+        icon: UserCheck,
       },
       {
-        title: "Complaint Handling",
-        url: "/moderator/complaints",
-        icon: MessageCircle,
-      },
-      {
-        title: "Zero-Point Verification",
-        url: "/moderator/verification",
-        icon: CheckCircle2,
+        title: "Violation Management",
+        url: "/manager/violations",
+        icon: AlertTriangle,
       },
     ],
   },
