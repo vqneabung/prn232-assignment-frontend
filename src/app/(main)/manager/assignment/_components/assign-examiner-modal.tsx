@@ -4,6 +4,9 @@ import { useState } from "react";
 
 import { X, CheckCircle2 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -11,19 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+import { handleAssignExaminers } from "../../handlers";
 import { SubmissionAssignment } from "../../types";
 import { generateMockExaminerProfiles } from "../utils";
 
@@ -53,12 +47,8 @@ export function AssignExaminerModal({
     setSelectedExaminers(newSelected);
   };
 
-  const handleAssign = () => {
-    // In a real app, this would call an API
-    console.log("Assigning submissions to examiners", {
-      submissions: selectedSubmissionIds,
-      examiners: Array.from(selectedExaminers),
-    });
+  const handleAssign = async () => {
+    await handleAssignExaminers(selectedSubmissionIds, Array.from(selectedExaminers));
     onClose();
   };
 

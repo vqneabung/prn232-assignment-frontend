@@ -1,8 +1,10 @@
+"use client";
+
 import { Plus, Edit, Trash2, Calendar } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -12,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { handleDeleteSemester } from "../../handlers";
 import { generateMockSemesters, getStatusColor, getStatusLabel } from "../../utils";
 
 export default function AdminSemestersPage() {
@@ -147,7 +150,12 @@ export default function AdminSemestersPage() {
                         <Button variant="ghost" size="sm">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700"
+                          onClick={() => handleDeleteSemester(semester.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

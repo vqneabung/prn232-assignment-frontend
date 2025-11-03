@@ -1,8 +1,10 @@
+"use client";
+
 import { Eye, CheckCircle2, AlertCircle, RotateCcw } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -12,6 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  handleReviewZeroPointCase,
+  handleVerifyZeroPoints,
+  handleRequestRemark,
+} from "../handlers";
 import { generateMockZeroPointSubmissions, getStatusColor, getStatusLabel } from "../utils";
 
 export default function ModeratorVerificationPage() {
@@ -117,11 +124,15 @@ export default function ModeratorVerificationPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {submission.verifiedBy || "-"}
+                      {submission.verifiedBy ?? "-"}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReviewZeroPointCase(submission.id)}
+                        >
                           <Eye className="h-4 w-4 mr-1" />
                           Review
                         </Button>
@@ -131,6 +142,7 @@ export default function ModeratorVerificationPage() {
                               variant="ghost"
                               size="sm"
                               className="text-green-600 hover:text-green-700"
+                              onClick={() => handleVerifyZeroPoints(submission.id)}
                             >
                               <CheckCircle2 className="h-4 w-4 mr-1" />
                               Verify
@@ -139,6 +151,7 @@ export default function ModeratorVerificationPage() {
                               variant="ghost"
                               size="sm"
                               className="text-blue-600 hover:text-blue-700"
+                              onClick={() => handleRequestRemark(submission.id)}
                             >
                               <RotateCcw className="h-4 w-4 mr-1" />
                               Remark

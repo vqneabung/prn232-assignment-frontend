@@ -1,15 +1,13 @@
+"use client";
+
 import { Download, FileText, Filter } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+import { handleGenerateReport, handleExportReport } from "../handlers";
 
 export default function AdminReportsPage() {
   const reportTypes = [
@@ -116,7 +114,10 @@ export default function AdminReportsPage() {
           </div>
 
           <div className="flex gap-2">
-            <Button className="gap-2">
+            <Button
+              className="gap-2"
+              onClick={() => handleGenerateReport("grading_summary")}
+            >
               <Download className="h-4 w-4" />
               Generate Report
             </Button>
@@ -143,7 +144,11 @@ export default function AdminReportsPage() {
                     </Badge>
                   ))}
                 </div>
-                <Button className="w-full gap-2" size="sm">
+                <Button
+                  className="w-full gap-2"
+                  size="sm"
+                  onClick={() => handleExportReport(`report-${index}`, "xlsx")}
+                >
                   <Download className="h-4 w-4" />
                   Download
                 </Button>
@@ -188,7 +193,11 @@ export default function AdminReportsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">{download.format}</Badge>
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleExportReport(`recent-${index}`, "xlsx")}
+                  >
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>

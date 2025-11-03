@@ -1,8 +1,10 @@
+"use client";
+
 import { AlertCircle, CheckCircle2, Clock, Trash2 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -12,6 +14,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  handleReviewComplaint,
+  handleDeleteComplaint,
+} from "../handlers";
 import { generateMockComplaints, getPriorityColor, getStatusColor, getStatusLabel } from "../utils";
 
 export default function ModeratorComplaintsPage() {
@@ -129,13 +135,19 @@ export default function ModeratorComplaintsPage() {
                       {new Date(complaint.submittedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="sm" className="mr-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => handleReviewComplaint(complaint.id)}
+                      >
                         Review
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="text-red-600 hover:text-red-700"
+                        onClick={() => handleDeleteComplaint(complaint.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

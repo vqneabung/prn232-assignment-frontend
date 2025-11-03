@@ -1,18 +1,14 @@
+"use client";
+
 import { CheckCircle2, AlertCircle, Download } from "lucide-react";
 
+import { generateMockResultApprovals, getStatusColor, getStatusLabel } from "@/app/(main)/admin/utils";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import { generateMockResultApprovals, getStatusColor, getStatusLabel } from "@/app/(main)/admin/utils";
+import { handleApproveResults, handleRejectResults, handleDownloadReport } from "../handlers";
 
 export default function AdminApprovalPage() {
   const approvals = generateMockResultApprovals();
@@ -136,16 +132,26 @@ export default function AdminApprovalPage() {
                               variant="outline"
                               size="sm"
                               className="text-green-600 hover:text-green-700"
+                              onClick={() => handleApproveResults(approval.id)}
                             >
                               <CheckCircle2 className="h-4 w-4 mr-1" />
                               Approve
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-red-600">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600"
+                              onClick={() => handleRejectResults(approval.id, "Grades need review")}
+                            >
                               Reject
                             </Button>
                           </div>
                         ) : (
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDownloadReport(approval.id)}
+                          >
                             <Download className="h-4 w-4" />
                           </Button>
                         )}

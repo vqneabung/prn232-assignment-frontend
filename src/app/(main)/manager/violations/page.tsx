@@ -1,8 +1,10 @@
-import { AlertTriangle, Eye, CheckCircle2, XCircle } from "lucide-react";
+"use client";
 
+import { AlertTriangle, Eye, CheckCircle2 } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -11,6 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import {
+  handleReviewViolation,
+  handleResolveViolation,
+} from "../handlers";
 
 interface Violation {
   id: string;
@@ -91,21 +98,6 @@ function getSeverityColor(severity: string): string {
       return "bg-red-200 text-red-900";
     default:
       return "bg-gray-100 text-gray-800";
-  }
-}
-
-function getSeverityIcon(severity: string) {
-  switch (severity) {
-    case "low":
-      return <AlertTriangle className="h-4 w-4" />;
-    case "medium":
-      return <AlertTriangle className="h-4 w-4" />;
-    case "high":
-      return <AlertTriangle className="h-4 w-4" />;
-    case "critical":
-      return <AlertTriangle className="h-4 w-4" />;
-    default:
-      return null;
   }
 }
 
@@ -222,7 +214,11 @@ export default function ManagerViolationManagementPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReviewViolation(violation.id)}
+                        >
                           <Eye className="h-4 w-4" />
                           Review
                         </Button>
@@ -230,6 +226,7 @@ export default function ManagerViolationManagementPage() {
                           variant="ghost"
                           size="sm"
                           className="text-green-600 hover:text-green-700"
+                          onClick={() => handleResolveViolation(violation.id, "dismiss")}
                         >
                           <CheckCircle2 className="h-4 w-4" />
                           Resolve
