@@ -1,10 +1,4 @@
-import {
-  GradeListItem,
-  SubmissionGrade,
-  GradingRubric,
-  GraderScore,
-  GradingCriteria,
-} from "./types";
+import { GradeListItem, SubmissionGrade, GradingRubric, GraderScore, GradingCriteria } from "./types";
 
 /**
  * Generate mock grading rubrics
@@ -85,9 +79,7 @@ export function generateMockGradeList(): GradeListItem[] {
       status,
       finalScore: isGraded ? Math.floor(Math.random() * 40) + 60 : undefined,
       graderCount: isGraded ? Math.floor(Math.random() * 2) + 1 : 0,
-      submittedAt: new Date(
-        Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
-      ).toISOString(),
+      submittedAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
     });
   }
 
@@ -152,9 +144,7 @@ export function generateMockSubmissionGrade(studentId: string): SubmissionGrade 
   // Calculate final score (average if multiple graders)
   let finalScore: number | undefined;
   if (graderScores.length > 0) {
-    finalScore = Math.round(
-      graderScores.reduce((sum, score) => sum + score.score, 0) / graderScores.length
-    );
+    finalScore = Math.round(graderScores.reduce((sum, score) => sum + score.score, 0) / graderScores.length);
   }
 
   return {
@@ -168,20 +158,14 @@ export function generateMockSubmissionGrade(studentId: string): SubmissionGrade 
     finalScore,
     graderScores,
     submittedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    gradedAt:
-      status !== "pending"
-        ? new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-        : undefined,
+    gradedAt: status !== "pending" ? new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() : undefined,
   };
 }
 
 /**
  * Calculate final score from rubric scores
  */
-export function calculateFinalScore(
-  rubricScores: Record<string, number>,
-  rubrics: GradingRubric[]
-): number {
+export function calculateFinalScore(rubricScores: Record<string, number>, rubrics: GradingRubric[]): number {
   let totalScore = 0;
 
   rubrics.forEach((rubric) => {
@@ -211,9 +195,7 @@ export function getStatusLabel(status: string): string {
 /**
  * Format status badge color
  */
-export function getStatusColor(
-  status: string
-): "default" | "secondary" | "destructive" | "outline" {
+export function getStatusColor(status: string): "default" | "secondary" | "destructive" | "outline" {
   switch (status) {
     case "pending":
       return "destructive";

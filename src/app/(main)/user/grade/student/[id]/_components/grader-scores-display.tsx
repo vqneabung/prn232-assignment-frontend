@@ -3,12 +3,7 @@
 import { User, Calendar, FileText } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 import { GraderScore, GradingRubric } from "../../../types";
@@ -19,11 +14,7 @@ interface GraderScoresDisplayProps {
   averageScore?: number;
 }
 
-export function GraderScoresDisplay({
-  graderScores,
-  rubrics,
-  averageScore,
-}: GraderScoresDisplayProps) {
+export function GraderScoresDisplay({ graderScores, rubrics, averageScore }: GraderScoresDisplayProps) {
   if (graderScores.length === 0) {
     return null;
   }
@@ -32,9 +23,7 @@ export function GraderScoresDisplay({
     <div className="space-y-4">
       <div>
         <h3 className="text-lg font-semibold">Kết quả chấm điểm</h3>
-        <p className="text-sm text-muted-foreground">
-          {graderScores.length} chấm viên đã chấm bài này
-        </p>
+        <p className="text-muted-foreground text-sm">{graderScores.length} chấm viên đã chấm bài này</p>
       </div>
 
       {averageScore !== undefined && graderScores.length > 1 && (
@@ -45,8 +34,8 @@ export function GraderScoresDisplay({
           <CardContent>
             <div className="flex items-center gap-4">
               <div className="text-3xl font-bold text-green-600">{averageScore}</div>
-              <Progress value={averageScore} className="flex-1 h-2" />
-              <span className="text-sm text-muted-foreground">/ 100</span>
+              <Progress value={averageScore} className="h-2 flex-1" />
+              <span className="text-muted-foreground text-sm">/ 100</span>
             </div>
           </CardContent>
         </Card>
@@ -64,11 +53,11 @@ export function GraderScoresDisplay({
                       Chấm viên {idx + 1}
                     </Badge>
                   </div>
-                  <h4 className="font-semibold mt-1">{graderScore.graderName}</h4>
+                  <h4 className="mt-1 font-semibold">{graderScore.graderName}</h4>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold">{graderScore.score}</div>
-                  <span className="text-xs text-muted-foreground">/ 100</span>
+                  <span className="text-muted-foreground text-xs">/ 100</span>
                 </div>
               </div>
             </CardHeader>
@@ -83,7 +72,7 @@ export function GraderScoresDisplay({
 
                     return (
                       <div key={rubric.id} className="text-sm">
-                        <div className="flex justify-between mb-1">
+                        <div className="mb-1 flex justify-between">
                           <span className="text-muted-foreground">{rubric.name}</span>
                           <span className="font-medium">
                             {score}/{rubric.maxScore} ({percentage}%)
@@ -100,9 +89,9 @@ export function GraderScoresDisplay({
               {graderScore.feedback && (
                 <div className="bg-muted/50 rounded p-3">
                   <div className="flex gap-2">
-                    <FileText className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                    <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground mb-1">Nhận xét:</p>
+                      <p className="text-muted-foreground mb-1 text-xs font-medium">Nhận xét:</p>
                       <p className="text-sm">{graderScore.feedback}</p>
                     </div>
                   </div>
@@ -110,7 +99,7 @@ export function GraderScoresDisplay({
               )}
 
               {/* Metadata */}
-              <div className="flex gap-4 text-xs text-muted-foreground">
+              <div className="text-muted-foreground flex gap-4 text-xs">
                 <div className="flex items-center gap-1">
                   <User className="h-3 w-3" />
                   <span>{graderScore.graderName}</span>

@@ -4,21 +4,8 @@ import Link from "next/link";
 import { CheckCircle2, Clock, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { generateMockGradeList } from "../utils";
@@ -37,9 +24,7 @@ export default function GradeListPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Danh sách bài chấm</h1>
-        <p className="text-muted-foreground mt-2">
-          Quản lý và chấm bài nộp của sinh viên
-        </p>
+        <p className="text-muted-foreground mt-2">Quản lý và chấm bài nộp của sinh viên</p>
       </div>
 
       {/* Statistics Cards */}
@@ -50,7 +35,7 @@ export default function GradeListPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalCount}</div>
-            <p className="text-xs text-muted-foreground">bài chưa chấm hoặc đã chấm</p>
+            <p className="text-muted-foreground text-xs">bài chưa chấm hoặc đã chấm</p>
           </CardContent>
         </Card>
 
@@ -60,7 +45,7 @@ export default function GradeListPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">{pendingCount}</div>
-            <p className="text-xs text-muted-foreground">đang chờ xử lý</p>
+            <p className="text-muted-foreground text-xs">đang chờ xử lý</p>
           </CardContent>
         </Card>
 
@@ -70,7 +55,7 @@ export default function GradeListPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">{gradedCount}</div>
-            <p className="text-xs text-muted-foreground">đã nhập điểm</p>
+            <p className="text-muted-foreground text-xs">đã nhập điểm</p>
           </CardContent>
         </Card>
 
@@ -80,7 +65,7 @@ export default function GradeListPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{reviewedCount}</div>
-            <p className="text-xs text-muted-foreground">double-graded</p>
+            <p className="text-muted-foreground text-xs">double-graded</p>
           </CardContent>
         </Card>
       </div>
@@ -112,9 +97,7 @@ export default function GradeListPage() {
                     <TableCell>{grade.studentCode}</TableCell>
                     <TableCell>{grade.classCode}</TableCell>
                     <TableCell>
-                      <Badge variant={getStatusColor(grade.status)}>
-                        {getStatusLabel(grade.status)}
-                      </Badge>
+                      <Badge variant={getStatusColor(grade.status)}>{getStatusLabel(grade.status)}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       {grade.finalScore !== undefined ? (
@@ -131,11 +114,7 @@ export default function GradeListPage() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        asChild
-                        variant="ghost"
-                        size="sm"
-                      >
+                      <Button asChild variant="ghost" size="sm">
                         <Link href={`/user/grade/student/${grade.id}`}>
                           {grade.status === "pending" ? (
                             <>

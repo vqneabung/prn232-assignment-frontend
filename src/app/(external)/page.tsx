@@ -21,8 +21,8 @@ export default function Home() {
                   </span>
                 </h1>
                 <p className="text-muted-foreground mx-auto max-w-2xl text-base md:text-lg lg:text-xl">
-                  Giải pháp toàn diện cho việc chấm điểm bài tập. Tự động hóa quy trình chấm bài, tiết kiệm thời gian
-                  và nâng cao hiệu quả.
+                  Giải pháp toàn diện cho việc chấm điểm bài tập. Tự động hóa quy trình chấm bài, tiết kiệm thời gian và
+                  nâng cao hiệu quả.
                 </p>
               </div>
               <div className="flex w-full flex-col justify-center gap-4 sm:flex-row sm:gap-6">
@@ -44,7 +44,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="w-full border-t bg-background py-20 md:py-28 lg:py-32">
+        <section id="features" className="bg-background w-full border-t py-20 md:py-28 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
             <div className="mb-16 flex flex-col items-center justify-center space-y-4 text-center">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl">Tính năng chính</h2>
@@ -81,11 +81,9 @@ export default function Home() {
               ].map((feature) => (
                 <div
                   key={feature.title}
-                  className="group space-y-3 rounded-xl border bg-card p-6 transition-all hover:shadow-xl hover:border-primary/50"
+                  className="group bg-card hover:border-primary/50 space-y-3 rounded-xl border p-6 transition-all hover:shadow-xl"
                 >
-                  <h3 className="text-lg font-semibold transition-colors group-hover:text-primary">
-                    {feature.title}
-                  </h3>
+                  <h3 className="group-hover:text-primary text-lg font-semibold transition-colors">{feature.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
                 </div>
               ))}
@@ -93,9 +91,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full border-t bg-muted py-20 md:py-28 lg:py-32">
+        <section className="bg-muted w-full border-t py-20 md:py-28 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="mx-auto grid max-w-5xl gap-8 md:gap-12 text-center md:grid-cols-3">
+            <div className="mx-auto grid max-w-5xl gap-8 text-center md:grid-cols-3 md:gap-12">
               <div className="space-y-3 md:space-y-4">
                 <div className="text-primary text-5xl font-bold md:text-6xl lg:text-7xl">10K+</div>
                 <p className="text-muted-foreground text-sm md:text-base lg:text-lg">Giáo viên đang sử dụng</p>
@@ -112,19 +110,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full border-t bg-background py-20 md:py-28 lg:py-32">
+        <section className="bg-background w-full border-t py-20 md:py-28 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="mx-auto flex max-w-3xl flex-col items-center justify-center space-y-6 md:space-y-8 text-center">
+            <div className="mx-auto flex max-w-3xl flex-col items-center justify-center space-y-6 text-center md:space-y-8">
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl">
-                  Sẵn sàng bắt đầu?
-                </h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl">Sẵn sàng bắt đầu?</h2>
                 <p className="text-muted-foreground text-sm md:text-base lg:text-lg">
                   Tham gia hàng ngàn giáo viên tin tưởng nền tảng của chúng tôi
                 </p>
               </div>
               <Link href="/auth/login">
-                <Button size="lg" className="h-12 md:h-14 px-8 md:px-12 text-base md:text-lg">
+                <Button size="lg" className="h-12 px-8 text-base md:h-14 md:px-12 md:text-lg">
                   Đăng nhập ngay
                 </Button>
               </Link>
@@ -141,7 +137,7 @@ export default function Home() {
               <p className="text-muted-foreground text-sm leading-relaxed">Nền tảng chấm bài thông minh</p>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide">Sản phẩm</h4>
+              <h4 className="text-sm font-semibold tracking-wide uppercase">Sản phẩm</h4>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -156,7 +152,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide">Về chúng tôi</h4>
+              <h4 className="text-sm font-semibold tracking-wide uppercase">Về chúng tôi</h4>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -171,7 +167,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide">Pháp lý</h4>
+              <h4 className="text-sm font-semibold tracking-wide uppercase">Pháp lý</h4>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">

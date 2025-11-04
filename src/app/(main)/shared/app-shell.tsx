@@ -29,13 +29,7 @@ interface AppShellProps {
   readonly children: React.ReactNode;
 }
 
-export function AppShell({
-  defaultOpen,
-  sidebarComponent,
-  layoutPreferences,
-  users,
-  children,
-}: AppShellProps) {
+export function AppShell({ defaultOpen, sidebarComponent, layoutPreferences, users, children }: AppShellProps) {
   const { contentLayout, variant, collapsible, navbarStyle } = layoutPreferences;
 
   return (

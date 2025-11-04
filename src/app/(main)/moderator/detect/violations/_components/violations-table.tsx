@@ -5,26 +5,9 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { ViolationRecord, VIOLATION_LABELS, VIOLATION_SEVERITY_COLOR } from "../types";
 
@@ -40,13 +23,9 @@ function ViolationRow({ record }: { record: ViolationRecord }) {
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <>
         <CollapsibleTrigger asChild>
-          <TableRow className="cursor-pointer hover:bg-muted/50">
+          <TableRow className="hover:bg-muted/50 cursor-pointer">
             <TableCell>
-              <ChevronDown
-                className={`h-4 w-4 transition-transform ${
-                  isOpen ? "rotate-180" : ""
-                }`}
-              />
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </TableCell>
             <TableCell className="font-medium">{record.studentName}</TableCell>
             <TableCell>{record.studentId}</TableCell>
@@ -63,22 +42,15 @@ function ViolationRow({ record }: { record: ViolationRecord }) {
                 {record.violations.map((violation) => (
                   <div
                     key={`${violation.type}-${violation.severity}`}
-                    className="rounded-lg border bg-card p-3 space-y-1"
+                    className="bg-card space-y-1 rounded-lg border p-3"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <Badge
-                        variant="outline"
-                        className={VIOLATION_SEVERITY_COLOR[violation.severity]}
-                      >
+                      <Badge variant="outline" className={VIOLATION_SEVERITY_COLOR[violation.severity]}>
                         {VIOLATION_LABELS[violation.type]}
                       </Badge>
-                      <span className="text-xs font-medium text-muted-foreground">
-                        Mức độ: {violation.severity}
-                      </span>
+                      <span className="text-muted-foreground text-xs font-medium">Mức độ: {violation.severity}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      {violation.message}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{violation.message}</p>
                   </div>
                 ))}
               </div>
@@ -98,7 +70,7 @@ export function ViolationsTable({ data, isLoading = false }: ViolationsTableProp
           <CardTitle>Kết quả phát hiện</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center text-muted-foreground">Đang xử lí...</div>
+          <div className="text-muted-foreground text-center">Đang xử lí...</div>
         </CardContent>
       </Card>
     );
@@ -112,9 +84,7 @@ export function ViolationsTable({ data, isLoading = false }: ViolationsTableProp
           <CardDescription>Không có dữ liệu để hiển thị</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center text-muted-foreground">
-            Tải lên file để bắt đầu phát hiện vi phạm
-          </div>
+          <div className="text-muted-foreground text-center">Tải lên file để bắt đầu phát hiện vi phạm</div>
         </CardContent>
       </Card>
     );
@@ -124,9 +94,7 @@ export function ViolationsTable({ data, isLoading = false }: ViolationsTableProp
     <Card>
       <CardHeader>
         <CardTitle>Kết quả phát hiện</CardTitle>
-        <CardDescription>
-          Tìm thấy {data.length} bộ hồ sơ với vi phạm
-        </CardDescription>
+        <CardDescription>Tìm thấy {data.length} bộ hồ sơ với vi phạm</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">

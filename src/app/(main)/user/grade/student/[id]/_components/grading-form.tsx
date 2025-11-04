@@ -7,22 +7,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
@@ -53,7 +39,7 @@ export function GradingForm({ rubrics, onSubmit, isLoading = false }: GradingFor
         acc[r.id] = 0;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     ),
   };
 
@@ -95,9 +81,9 @@ export function GradingForm({ rubrics, onSubmit, isLoading = false }: GradingFor
           <div className="flex items-end gap-4">
             <div>
               <div className="text-4xl font-bold text-blue-600">{finalScore}</div>
-              <p className="text-sm text-muted-foreground">/ 100 điểm</p>
+              <p className="text-muted-foreground text-sm">/ 100 điểm</p>
             </div>
-            <Progress value={finalScore} className="flex-1 h-2" />
+            <Progress value={finalScore} className="h-2 flex-1" />
           </div>
         </CardContent>
       </Card>
@@ -118,13 +104,13 @@ export function GradingForm({ rubrics, onSubmit, isLoading = false }: GradingFor
                   const percentage = Math.round((score / rubric.maxScore) * 100);
 
                   return (
-                    <div key={rubric.id} className="rounded-lg border p-4 space-y-3">
+                    <div key={rubric.id} className="space-y-3 rounded-lg border p-4">
                       <div>
                         <h4 className="font-semibold">{rubric.name}</h4>
-                        <p className="text-sm text-muted-foreground">{rubric.description}</p>
+                        <p className="text-muted-foreground text-sm">{rubric.description}</p>
                       </div>
 
-                      <div className="flex gap-4 items-end">
+                      <div className="flex items-end gap-4">
                         <FormField
                           control={form.control}
                           name={`rubricScores.${rubric.id}`}
@@ -154,13 +140,11 @@ export function GradingForm({ rubrics, onSubmit, isLoading = false }: GradingFor
                         />
                         <div className="text-right">
                           <div className="text-lg font-semibold">{percentage}%</div>
-                          <Progress value={percentage} className="w-16 h-1 mt-1" />
+                          <Progress value={percentage} className="mt-1 h-1 w-16" />
                         </div>
                       </div>
 
-                      <div className="text-xs text-muted-foreground">
-                        Trọng số: {rubric.weight}%
-                      </div>
+                      <div className="text-muted-foreground text-xs">Trọng số: {rubric.weight}%</div>
                     </div>
                   );
                 })}
@@ -174,15 +158,9 @@ export function GradingForm({ rubrics, onSubmit, isLoading = false }: GradingFor
                   <FormItem>
                     <FormLabel>Nhận xét / Feedback</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Nhập nhận xét chi tiết cho sinh viên..."
-                        rows={5}
-                        {...field}
-                      />
+                      <Textarea placeholder="Nhập nhận xét chi tiết cho sinh viên..." rows={5} {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Tối đa 1000 ký tự. Sinh viên sẽ nhìn thấy nhận xét này.
-                    </FormDescription>
+                    <FormDescription>Tối đa 1000 ký tự. Sinh viên sẽ nhìn thấy nhận xét này.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

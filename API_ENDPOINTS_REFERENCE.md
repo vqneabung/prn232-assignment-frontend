@@ -9,7 +9,9 @@ Dưới đây là structure của các API endpoints mà bạn cần implement �
 ### Assignment Management
 
 #### `POST /api/manager/assignments`
+
 Assign examiners to multiple submissions
+
 ```typescript
 Request Body:
 {
@@ -29,7 +31,9 @@ Response:
 ```
 
 #### `PUT /api/manager/assignments/{submissionId}`
+
 Reassign examiner for a submission
+
 ```typescript
 Request Body:
 {
@@ -46,7 +50,9 @@ Response:
 ```
 
 #### `DELETE /api/manager/assignments/{submissionId}/examiners/{examinerId}`
+
 Remove examiner from submission
+
 ```typescript
 Response:
 {
@@ -58,7 +64,9 @@ Response:
 ### Violation Management
 
 #### `GET /api/manager/violations/{violationId}`
+
 Get violation details
+
 ```typescript
 Response:
 {
@@ -76,7 +84,9 @@ Response:
 ```
 
 #### `PATCH /api/manager/violations/{violationId}`
+
 Resolve or update violation
+
 ```typescript
 Request Body:
 {
@@ -94,7 +104,9 @@ Response:
 ```
 
 #### `PATCH /api/manager/violations/{violationId}/spam`
+
 Mark violation as spam
+
 ```typescript
 Response:
 {
@@ -110,7 +122,9 @@ Response:
 ### Complaint Management
 
 #### `GET /api/moderator/complaints/{complaintId}`
+
 Get complaint details
+
 ```typescript
 Response:
 {
@@ -120,7 +134,9 @@ Response:
 ```
 
 #### `PATCH /api/moderator/complaints/{complaintId}`
+
 Resolve complaint
+
 ```typescript
 Request Body:
 {
@@ -138,7 +154,9 @@ Response:
 ```
 
 #### `DELETE /api/moderator/complaints/{complaintId}`
+
 Delete complaint
+
 ```typescript
 Response:
 {
@@ -148,7 +166,9 @@ Response:
 ```
 
 #### `POST /api/moderator/complaints/{complaintId}/assign`
+
 Assign complaint to moderator
+
 ```typescript
 Request Body:
 {
@@ -166,7 +186,9 @@ Response:
 ### Zero-Point Verification
 
 #### `GET /api/moderator/verifications/{submissionId}`
+
 Get zero-point case details
+
 ```typescript
 Response:
 {
@@ -176,7 +198,9 @@ Response:
 ```
 
 #### `PATCH /api/moderator/verifications/{submissionId}`
+
 Verify or dismiss zero-point
+
 ```typescript
 Request Body:
 {
@@ -193,7 +217,9 @@ Response:
 ```
 
 #### `POST /api/moderator/verifications/{submissionId}/remark`
+
 Request re-examination/remark
+
 ```typescript
 Request Body:
 {
@@ -209,7 +235,9 @@ Response:
 ```
 
 #### `POST /api/moderator/verifications/{submissionId}/notes`
+
 Add verification notes
+
 ```typescript
 Request Body:
 {
@@ -227,7 +255,9 @@ Response:
 ### Fairness Review
 
 #### `GET /api/moderator/fairness/{submissionId}`
+
 Get fairness review details
+
 ```typescript
 Response:
 {
@@ -237,7 +267,9 @@ Response:
 ```
 
 #### `PATCH /api/moderator/fairness/{submissionId}`
+
 Resolve fairness discrepancy
+
 ```typescript
 Request Body:
 {
@@ -253,7 +285,9 @@ Response:
 ```
 
 #### `POST /api/moderator/fairness/{submissionId}/reexamine`
+
 Request re-examination
+
 ```typescript
 Response:
 {
@@ -269,7 +303,9 @@ Response:
 ### Subject Management
 
 #### `POST /api/admin/subjects`
+
 Create subject
+
 ```typescript
 Request Body:
 {
@@ -287,7 +323,9 @@ Response:
 ```
 
 #### `PUT /api/admin/subjects/{subjectId}`
+
 Update subject
+
 ```typescript
 Request Body:
 {
@@ -305,7 +343,9 @@ Response:
 ```
 
 #### `DELETE /api/admin/subjects/{subjectId}`
+
 Delete subject
+
 ```typescript
 Response:
 {
@@ -317,7 +357,9 @@ Response:
 ### Semester Management
 
 #### `POST /api/admin/semesters`
+
 Create semester
+
 ```typescript
 Request Body:
 {
@@ -336,7 +378,9 @@ Response:
 ```
 
 #### `PUT /api/admin/semesters/{semesterId}`
+
 Update semester
+
 ```typescript
 Request Body:
 {
@@ -354,7 +398,9 @@ Response:
 ```
 
 #### `DELETE /api/admin/semesters/{semesterId}`
+
 Delete semester
+
 ```typescript
 Response:
 {
@@ -364,7 +410,9 @@ Response:
 ```
 
 #### `PATCH /api/admin/semesters/{semesterId}/set-current`
+
 Set as current/active semester
+
 ```typescript
 Response:
 {
@@ -377,7 +425,9 @@ Response:
 ### Exam Management
 
 #### `POST /api/admin/exams`
+
 Create exam
+
 ```typescript
 Request Body:
 {
@@ -400,7 +450,9 @@ Response:
 ```
 
 #### `PUT /api/admin/exams/{examId}`
+
 Update exam
+
 ```typescript
 Request Body:
 {
@@ -420,7 +472,9 @@ Response:
 ```
 
 #### `DELETE /api/admin/exams/{examId}`
+
 Delete exam
+
 ```typescript
 Response:
 {
@@ -430,7 +484,9 @@ Response:
 ```
 
 #### `PATCH /api/admin/exams/{examId}/publish`
+
 Publish exam
+
 ```typescript
 Response:
 {
@@ -441,7 +497,9 @@ Response:
 ```
 
 #### `PATCH /api/admin/exams/{examId}/close`
+
 Close/finish exam
+
 ```typescript
 Response:
 {
@@ -454,7 +512,9 @@ Response:
 ### Results Approval
 
 #### `GET /api/admin/approvals/{examId}`
+
 Get approval details
+
 ```typescript
 Response:
 {
@@ -471,7 +531,9 @@ Response:
 ```
 
 #### `PATCH /api/admin/approvals/{examId}`
+
 Approve or reject results
+
 ```typescript
 Request Body:
 {
@@ -488,7 +550,9 @@ Response:
 ```
 
 #### `POST /api/admin/approvals/{examId}/review-request`
+
 Request results review
+
 ```typescript
 Response:
 {
@@ -500,7 +564,9 @@ Response:
 ### Report Generation
 
 #### `POST /api/admin/reports/generate`
+
 Generate report
+
 ```typescript
 Request Body:
 {
@@ -526,7 +592,9 @@ Response:
 ```
 
 #### `POST /api/admin/reports/{reportId}/export`
+
 Export report
+
 ```typescript
 Request Body:
 {
@@ -545,14 +613,18 @@ Response:
 ```
 
 #### `GET /api/admin/reports/{reportId}/download`
+
 Download report file
+
 ```typescript
 Response:
 Binary file (PDF, Excel, CSV)
 ```
 
 #### `DELETE /api/admin/reports/{reportId}`
+
 Delete report
+
 ```typescript
 Response:
 {
@@ -562,7 +634,9 @@ Response:
 ```
 
 #### `POST /api/admin/reports/schedule`
+
 Schedule recurring reports
+
 ```typescript
 Request Body:
 {
@@ -585,7 +659,9 @@ Response:
 ### System Audit
 
 #### `GET /api/admin/audit-logs/{resourceType}`
+
 Get audit log
+
 ```typescript
 Query Params:
 - resourceType: "subject" | "semester" | "exam" | "approval" | "report"
@@ -600,7 +676,9 @@ Response:
 ```
 
 #### `GET /api/admin/audit-logs/{resourceType}/export`
+
 Export audit log
+
 ```typescript
 Query Params:
 - format: "excel" | "csv"
@@ -663,15 +741,12 @@ export async function handleDeleteSubject(subjectId: string): Promise<void> {
     toast.success("Subject deleted successfully");
 
     // TODO: Refetch subjects list or update local state
-    // Example: 
+    // Example:
     // const subjects = await fetch("/api/admin/subjects").then(r => r.json());
     // setSubjects(subjects.data);
-
   } catch (error) {
     console.error("Error deleting subject:", error);
-    toast.error(
-      error instanceof Error ? error.message : "Failed to delete subject"
-    );
+    toast.error(error instanceof Error ? error.message : "Failed to delete subject");
   }
 }
 ```
@@ -681,6 +756,7 @@ export async function handleDeleteSubject(subjectId: string): Promise<void> {
 ## 🔗 Base URL
 
 Tất cả endpoints bắt đầu với:
+
 - **Development**: `http://localhost:3000/api`
 - **Production**: `https://your-domain.com/api`
 

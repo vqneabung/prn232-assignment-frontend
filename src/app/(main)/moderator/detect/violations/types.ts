@@ -6,7 +6,7 @@ export interface ViolationRecord {
   violations: ViolationDetail[];
 }
 
-export type ViolationType = 
+export type ViolationType =
   | "incorrect_filename"
   | "invalid_naming_convention"
   | "source_code_duplicate"

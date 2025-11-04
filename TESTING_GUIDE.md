@@ -3,6 +3,7 @@
 ## Cách Kiểm Tra Các Handler
 
 ### 1. **Manager - Assignment Page**
+
 ```
 URL: /manager/assignment
 
@@ -16,6 +17,7 @@ Steps:
 ```
 
 ### 2. **Manager - Violations Page**
+
 ```
 URL: /manager/violations
 
@@ -25,11 +27,12 @@ Steps:
    → Console log: "Opening violation review for: VIO-XXX"
    → Toast: "Opening violation details..."
 3. Click "Resolve" button
-   → Console log: "Resolving violation" 
+   → Console log: "Resolving violation"
    → Toast: "Violation resolved successfully"
 ```
 
 ### 3. **Moderator - Complaints Page**
+
 ```
 URL: /moderator/complaints
 
@@ -43,6 +46,7 @@ Steps:
 ```
 
 ### 4. **Moderator - Verification Page**
+
 ```
 URL: /moderator/verification
 
@@ -60,6 +64,7 @@ Steps:
 ```
 
 ### 5. **Admin - Subjects Page**
+
 ```
 URL: /admin/system/subjects
 
@@ -71,6 +76,7 @@ Steps:
 ```
 
 ### 6. **Admin - Semesters Page**
+
 ```
 URL: /admin/system/semesters
 
@@ -82,6 +88,7 @@ Steps:
 ```
 
 ### 7. **Admin - Exams Page**
+
 ```
 URL: /admin/system/exams
 
@@ -93,6 +100,7 @@ Steps:
 ```
 
 ### 8. **Admin - Approval Page**
+
 ```
 URL: /admin/approval
 
@@ -111,6 +119,7 @@ Steps:
 ```
 
 ### 9. **Admin - Reports Page**
+
 ```
 URL: /admin/reports
 
@@ -157,17 +166,20 @@ Steps:
 
 ### Mỗi Handler Sẽ:
 
-1. **Log to Console** 
+1. **Log to Console**
+
    ```javascript
-   console.log("Action description", { params })
+   console.log("Action description", { params });
    ```
 
 2. **Simulate API Delay**
+
    ```
    Wait 600-1200ms (tuỳ handler)
    ```
 
 3. **Show Toast Notification**
+
    ```
    Success: "Action completed successfully"
    Error: "Failed to complete action"
@@ -183,16 +195,19 @@ Steps:
 ## 🛠️ Troubleshooting
 
 ### Nếu không thấy console log:
+
 - Chắc chắn Developer Tools đã mở
 - Chắc chắn Console tab được chọn
 - Try refresh page (F5) rồi click button lại
 
 ### Nếu không thấy toast notification:
+
 - Chắc chắn bạn click đúng button
 - Chắc chắn không có error trong console
 - Try scroll down để xem notification ở góc dưới phải
 
 ### Nếu page có lỗi:
+
 - Check console for error messages
 - Refresh page
 - Clear browser cache (Ctrl+Shift+Delete)
@@ -210,6 +225,7 @@ Khi bạn sẵn sàng integrate API:
 5. **Test lại** tất cả buttons
 
 **Example integration:**
+
 ```typescript
 // Trước (mock)
 export async function handleDeleteSubject(subjectId: string): Promise<void> {
@@ -230,11 +246,11 @@ export async function handleDeleteSubject(subjectId: string): Promise<void> {
     const response = await fetch(`/api/admin/subjects/${subjectId}`, {
       method: "DELETE",
     });
-    
+
     if (!response.ok) {
       throw new Error("Failed to delete");
     }
-    
+
     toast.success("Subject deleted successfully");
     // TODO: Refetch subjects list
   } catch (error) {

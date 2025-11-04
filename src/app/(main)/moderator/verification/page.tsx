@@ -5,20 +5,9 @@ import { Eye, CheckCircle2, AlertCircle, RotateCcw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import {
-  handleReviewZeroPointCase,
-  handleVerifyZeroPoints,
-  handleRequestRemark,
-} from "../handlers";
+import { handleReviewZeroPointCase, handleVerifyZeroPoints, handleRequestRemark } from "../handlers";
 import { generateMockZeroPointSubmissions, getStatusColor, getStatusLabel } from "../utils";
 
 export default function ModeratorVerificationPage() {
@@ -43,7 +32,7 @@ export default function ModeratorVerificationPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{submissions.length}</div>
-            <p className="text-xs text-muted-foreground">All submissions</p>
+            <p className="text-muted-foreground text-xs">All submissions</p>
           </CardContent>
         </Card>
 
@@ -73,7 +62,7 @@ export default function ModeratorVerificationPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{dismissedCount}</div>
-            <p className="text-xs text-muted-foreground">Not valid</p>
+            <p className="text-muted-foreground text-xs">Not valid</p>
           </CardContent>
         </Card>
       </div>
@@ -106,7 +95,7 @@ export default function ModeratorVerificationPage() {
                     <TableCell>
                       <div>
                         <p className="font-medium">{submission.studentName}</p>
-                        <p className="text-xs text-muted-foreground">{submission.studentCode}</p>
+                        <p className="text-muted-foreground text-xs">{submission.studentCode}</p>
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">{submission.examName}</TableCell>
@@ -114,26 +103,16 @@ export default function ModeratorVerificationPage() {
                     <TableCell className="text-sm">{submission.giaderedBy}</TableCell>
                     <TableCell>
                       <Badge className={getStatusColor(submission.verificationStatus)}>
-                        {submission.verificationStatus === "pending" && (
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                        )}
-                        {submission.verificationStatus === "verified" && (
-                          <CheckCircle2 className="h-3 w-3 mr-1" />
-                        )}
+                        {submission.verificationStatus === "pending" && <AlertCircle className="mr-1 h-3 w-3" />}
+                        {submission.verificationStatus === "verified" && <CheckCircle2 className="mr-1 h-3 w-3" />}
                         {getStatusLabel(submission.verificationStatus)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {submission.verifiedBy ?? "-"}
-                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">{submission.verifiedBy ?? "-"}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleReviewZeroPointCase(submission.id)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
+                        <Button variant="ghost" size="sm" onClick={() => handleReviewZeroPointCase(submission.id)}>
+                          <Eye className="mr-1 h-4 w-4" />
                           Review
                         </Button>
                         {submission.verificationStatus === "pending" && (
@@ -144,7 +123,7 @@ export default function ModeratorVerificationPage() {
                               className="text-green-600 hover:text-green-700"
                               onClick={() => handleVerifyZeroPoints(submission.id)}
                             >
-                              <CheckCircle2 className="h-4 w-4 mr-1" />
+                              <CheckCircle2 className="mr-1 h-4 w-4" />
                               Verify
                             </Button>
                             <Button
@@ -153,7 +132,7 @@ export default function ModeratorVerificationPage() {
                               className="text-blue-600 hover:text-blue-700"
                               onClick={() => handleRequestRemark(submission.id)}
                             >
-                              <RotateCcw className="h-4 w-4 mr-1" />
+                              <RotateCcw className="mr-1 h-4 w-4" />
                               Remark
                             </Button>
                           </>
@@ -189,9 +168,9 @@ export default function ModeratorVerificationPage() {
                 <div key={reason} className="flex items-center justify-between">
                   <span className="text-sm">{reason}</span>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-200 rounded-full h-2 w-24">
+                    <div className="h-2 w-24 flex-1 rounded-full bg-gray-200">
                       <div
-                        className="bg-red-500 h-2 rounded-full"
+                        className="h-2 rounded-full bg-red-500"
                         style={{
                           width: `${(count / submissions.length) * 100}%`,
                         }}

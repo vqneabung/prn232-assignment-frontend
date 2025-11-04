@@ -42,7 +42,7 @@ export function generateMockSubmissions(): SubmissionAssignment[] {
           examinerName: "Prof. Tran Thi B",
           status: "assigned",
           assignedAt: new Date(2024, 10, 1).toISOString(),
-        }
+        },
       );
     } else {
       examiners.push({
@@ -128,9 +128,7 @@ export function getExamList(): { id: string; name: string }[] {
   ];
 }
 
-export function getStatusBadgeColor(
-  status: "pending" | "assigned" | "in-grading" | "completed"
-): string {
+export function getStatusBadgeColor(status: "pending" | "assigned" | "in-grading" | "completed"): string {
   switch (status) {
     case "pending":
       return "bg-gray-100 text-gray-800";
@@ -143,9 +141,7 @@ export function getStatusBadgeColor(
   }
 }
 
-export function getStatusLabel(
-  status: "pending" | "assigned" | "in-grading" | "completed"
-): string {
+export function getStatusLabel(status: "pending" | "assigned" | "in-grading" | "completed"): string {
   switch (status) {
     case "pending":
       return "Pending";

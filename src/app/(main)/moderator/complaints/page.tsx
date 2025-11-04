@@ -5,19 +5,9 @@ import { AlertCircle, CheckCircle2, Clock, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import {
-  handleReviewComplaint,
-  handleDeleteComplaint,
-} from "../handlers";
+import { handleReviewComplaint, handleDeleteComplaint } from "../handlers";
 import { generateMockComplaints, getPriorityColor, getStatusColor, getStatusLabel } from "../utils";
 
 export default function ModeratorComplaintsPage() {
@@ -42,7 +32,7 @@ export default function ModeratorComplaintsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{complaints.length}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
+            <p className="text-muted-foreground text-xs">All time</p>
           </CardContent>
         </Card>
 
@@ -105,13 +95,11 @@ export default function ModeratorComplaintsPage() {
                     <TableCell>
                       <div>
                         <p className="font-medium">{complaint.studentName}</p>
-                        <p className="text-xs text-muted-foreground">{complaint.studentCode}</p>
+                        <p className="text-muted-foreground text-xs">{complaint.studentCode}</p>
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">{complaint.examName}</TableCell>
-                    <TableCell className="text-sm capitalize">
-                      {complaint.complaintType.replace(/_/g, " ")}
-                    </TableCell>
+                    <TableCell className="text-sm capitalize">{complaint.complaintType.replace(/_/g, " ")}</TableCell>
                     <TableCell>
                       <Badge className={getPriorityColor(complaint.priority)}>
                         {complaint.priority.charAt(0).toUpperCase() + complaint.priority.slice(1)}
@@ -119,19 +107,13 @@ export default function ModeratorComplaintsPage() {
                     </TableCell>
                     <TableCell>
                       <Badge className={getStatusColor(complaint.status)}>
-                        {complaint.status === "submitted" && (
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                        )}
-                        {complaint.status === "under-review" && (
-                          <Clock className="h-3 w-3 mr-1" />
-                        )}
-                        {complaint.status === "resolved" && (
-                          <CheckCircle2 className="h-3 w-3 mr-1" />
-                        )}
+                        {complaint.status === "submitted" && <AlertCircle className="mr-1 h-3 w-3" />}
+                        {complaint.status === "under-review" && <Clock className="mr-1 h-3 w-3" />}
+                        {complaint.status === "resolved" && <CheckCircle2 className="mr-1 h-3 w-3" />}
                         {getStatusLabel(complaint.status)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {new Date(complaint.submittedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
@@ -173,9 +155,9 @@ export default function ModeratorComplaintsPage() {
                 <div key={priority} className="flex items-center justify-between">
                   <span className="text-sm capitalize">{priority}</span>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-200 rounded-full h-2 w-20">
+                    <div className="h-2 w-20 flex-1 rounded-full bg-gray-200">
                       <div
-                        className="bg-blue-500 h-2 rounded-full"
+                        className="h-2 rounded-full bg-blue-500"
                         style={{
                           width: `${(count / complaints.length) * 100}%`,
                         }}
@@ -201,9 +183,9 @@ export default function ModeratorComplaintsPage() {
                 <div key={status} className="flex items-center justify-between">
                   <span className="text-sm capitalize">{getStatusLabel(status)}</span>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-200 rounded-full h-2 w-20">
+                    <div className="h-2 w-20 flex-1 rounded-full bg-gray-200">
                       <div
-                        className="bg-green-500 h-2 rounded-full"
+                        className="h-2 rounded-full bg-green-500"
                         style={{
                           width: `${(count / complaints.length) * 100}%`,
                         }}

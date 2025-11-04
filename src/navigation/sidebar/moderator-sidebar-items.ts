@@ -1,10 +1,4 @@
-import {
-  ShieldAlert,
-  LayoutDashboard,
-  MessageCircle,
-  CheckCircle2,
-  type LucideIcon,
-} from "lucide-react";
+import { ShieldAlert, LayoutDashboard, MessageCircle, CheckCircle2, type LucideIcon } from "lucide-react";
 
 export interface NavSubItem {
   title: string;
@@ -61,6 +55,17 @@ export const ModeratorSidebarItems: NavGroup[] = [
         title: "Zero-Point Verification",
         url: "/moderator/verification",
         icon: CheckCircle2,
+      },
+    ],
+  },
+  {
+    id: 3,
+    label: "Configuration",
+    items: [
+      {
+        title: "Rules",
+        url: "/moderator/rules",
+        icon: ShieldAlert,
       },
     ],
   },

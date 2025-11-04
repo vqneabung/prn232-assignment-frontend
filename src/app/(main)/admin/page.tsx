@@ -20,7 +20,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">+2 this semester</p>
+            <p className="text-muted-foreground text-xs">+2 this semester</p>
           </CardContent>
         </Card>
 
@@ -30,7 +30,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">Spring 2024</div>
-            <p className="text-xs text-muted-foreground">8 weeks remaining</p>
+            <p className="text-muted-foreground text-xs">8 weeks remaining</p>
           </CardContent>
         </Card>
 
@@ -40,7 +40,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">23</div>
-            <p className="text-xs text-muted-foreground">3 urgent</p>
+            <p className="text-muted-foreground text-xs">3 urgent</p>
           </CardContent>
         </Card>
 
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">98%</div>
-            <p className="text-xs text-muted-foreground">All systems normal</p>
+            <p className="text-muted-foreground text-xs">All systems normal</p>
           </CardContent>
         </Card>
       </div>

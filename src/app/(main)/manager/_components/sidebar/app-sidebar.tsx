@@ -10,15 +10,12 @@ interface ManagerAppSidebarProps {
   collapsible?: "offcanvas" | "icon" | "none";
 }
 
-export function ManagerAppSidebar({
-  variant = "sidebar",
-  collapsible = "icon",
-}: ManagerAppSidebarProps) {
+export function ManagerAppSidebar({ variant = "sidebar", collapsible = "icon" }: ManagerAppSidebarProps) {
   return (
     <Sidebar variant={variant} collapsible={collapsible}>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             <span className="text-xs font-bold">M</span>
           </div>
           <div className="flex flex-col gap-0.5 leading-none">

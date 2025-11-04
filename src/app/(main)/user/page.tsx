@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { authStore } from "@/stores/auth/authStore";
 

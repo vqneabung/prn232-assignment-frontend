@@ -20,7 +20,7 @@ export default function ManagerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">456</div>
-            <p className="text-xs text-muted-foreground">245 graded (54%)</p>
+            <p className="text-muted-foreground text-xs">245 graded (54%)</p>
           </CardContent>
         </Card>
 
@@ -30,7 +30,7 @@ export default function ManagerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">18</div>
-            <p className="text-xs text-muted-foreground">All assigned</p>
+            <p className="text-muted-foreground text-xs">All assigned</p>
           </CardContent>
         </Card>
 
@@ -40,7 +40,7 @@ export default function ManagerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">7</div>
-            <p className="text-xs text-muted-foreground">3 under review</p>
+            <p className="text-muted-foreground text-xs">3 under review</p>
           </CardContent>
         </Card>
 
@@ -50,7 +50,7 @@ export default function ManagerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">62%</div>
-            <p className="text-xs text-muted-foreground">3.5 days average</p>
+            <p className="text-muted-foreground text-xs">3.5 days average</p>
           </CardContent>
         </Card>
       </div>
@@ -83,30 +83,30 @@ export default function ManagerDashboard() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <div className="flex justify-between text-sm mb-1">
+              <div className="mb-1 flex justify-between text-sm">
                 <span>Mathematics</span>
                 <span>75%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full" style={{ width: "75%" }}></div>
+              <div className="h-2 w-full rounded-full bg-gray-200">
+                <div className="h-2 rounded-full bg-blue-500" style={{ width: "75%" }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-1">
+              <div className="mb-1 flex justify-between text-sm">
                 <span>Physics</span>
                 <span>62%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full" style={{ width: "62%" }}></div>
+              <div className="h-2 w-full rounded-full bg-gray-200">
+                <div className="h-2 rounded-full bg-blue-500" style={{ width: "62%" }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-1">
+              <div className="mb-1 flex justify-between text-sm">
                 <span>Chemistry</span>
                 <span>48%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full" style={{ width: "48%" }}></div>
+              <div className="h-2 w-full rounded-full bg-gray-200">
+                <div className="h-2 rounded-full bg-blue-500" style={{ width: "48%" }}></div>
               </div>
             </div>
           </CardContent>

@@ -17,11 +17,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-    // Lấy auth_email từ cookie (được set bởi AppProvider từ localStorage)
-    const authEmail = request.cookies.get("auth_email")?.value;
-    // const authEmail = email;
+  // Lấy auth_email từ cookie (được set bởi AppProvider từ localStorage)
+  const authEmail = request.cookies.get("auth_email")?.value;
+  // const authEmail = email;
 
-    console.log("Middleware check authEmail:", authEmail);
+  console.log("Middleware check authEmail:", authEmail);
 
   // Nếu không có email, redirect sang login
   if (!authEmail) {

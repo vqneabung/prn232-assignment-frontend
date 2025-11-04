@@ -60,7 +60,7 @@ export default function AdminReportsPage() {
       {/* Filter Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-base">
             <Filter className="h-4 w-4" />
             Report Filters
           </CardTitle>
@@ -114,10 +114,7 @@ export default function AdminReportsPage() {
           </div>
 
           <div className="flex gap-2">
-            <Button
-              className="gap-2"
-              onClick={() => handleGenerateReport("grading_summary")}
-            >
+            <Button className="gap-2" onClick={() => handleGenerateReport("grading_summary")}>
               <Download className="h-4 w-4" />
               Generate Report
             </Button>
@@ -128,10 +125,10 @@ export default function AdminReportsPage() {
 
       {/* Available Reports */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Available Reports</h2>
+        <h2 className="mb-4 text-xl font-semibold">Available Reports</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {reportTypes.map((report, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card key={index} className="transition-shadow hover:shadow-lg">
               <CardHeader className="pb-2">
                 <CardTitle className="text-base">{report.name}</CardTitle>
                 <CardDescription>{report.description}</CardDescription>
@@ -183,21 +180,17 @@ export default function AdminReportsPage() {
                 format: "Excel",
               },
             ].map((download, index) => (
-              <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={index} className="flex items-center justify-between rounded-lg border p-3">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-4 w-4 text-muted-foreground" />
+                  <FileText className="text-muted-foreground h-4 w-4" />
                   <div>
-                    <p className="font-medium text-sm">{download.name}</p>
-                    <p className="text-xs text-muted-foreground">{download.date}</p>
+                    <p className="text-sm font-medium">{download.name}</p>
+                    <p className="text-muted-foreground text-xs">{download.date}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">{download.format}</Badge>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleExportReport(`recent-${index}`, "xlsx")}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => handleExportReport(`recent-${index}`, "xlsx")}>
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>

@@ -26,12 +26,12 @@ export function generateMockComplaints(): Complaint[] {
       submittedAt: new Date(2024, 10, Math.random() * 20 + 1).toISOString(),
       submittedBy: `STU-${String(2024001 + i * 2).padStart(6, "0")}`,
       assignedTo: i % 2 === 0 ? "Dr. Moderator" : undefined,
-      resolution: statuses[Math.floor(Math.random() * statuses.length)] === "resolved"
-        ? "Reviewed and resolved"
-        : undefined,
-      resolvedAt: statuses[Math.floor(Math.random() * statuses.length)] === "resolved"
-        ? new Date(2024, 10, Math.random() * 20 + 15).toISOString()
-        : undefined,
+      resolution:
+        statuses[Math.floor(Math.random() * statuses.length)] === "resolved" ? "Reviewed and resolved" : undefined,
+      resolvedAt:
+        statuses[Math.floor(Math.random() * statuses.length)] === "resolved"
+          ? new Date(2024, 10, Math.random() * 20 + 15).toISOString()
+          : undefined,
     });
   }
 

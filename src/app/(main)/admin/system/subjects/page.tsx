@@ -5,14 +5,7 @@ import { Plus, Edit, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { handleDeleteSubject } from "../../handlers";
 import { generateMockSubjects, getStatusColor, getStatusLabel } from "../../utils";
@@ -42,7 +35,7 @@ export default function AdminSubjectsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{subjects.length}</div>
-            <p className="text-xs text-muted-foreground">Across all departments</p>
+            <p className="text-muted-foreground text-xs">Across all departments</p>
           </CardContent>
         </Card>
 
@@ -51,10 +44,8 @@ export default function AdminSubjectsPage() {
             <CardTitle className="text-sm font-medium">Active</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {subjects.filter((s) => s.status === "active").length}
-            </div>
-            <p className="text-xs text-muted-foreground">Available for enrollment</p>
+            <div className="text-2xl font-bold">{subjects.filter((s) => s.status === "active").length}</div>
+            <p className="text-muted-foreground text-xs">Available for enrollment</p>
           </CardContent>
         </Card>
 
@@ -64,7 +55,7 @@ export default function AdminSubjectsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{subjects.reduce((sum, s) => sum + s.credits, 0)}</div>
-            <p className="text-xs text-muted-foreground">Across all subjects</p>
+            <p className="text-muted-foreground text-xs">Across all subjects</p>
           </CardContent>
         </Card>
       </div>
@@ -95,15 +86,13 @@ export default function AdminSubjectsPage() {
                     <TableCell className="font-mono text-sm font-semibold">{subject.code}</TableCell>
                     <TableCell className="font-medium">{subject.name}</TableCell>
                     <TableCell>{subject.credits}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
+                    <TableCell className="text-muted-foreground max-w-xs truncate text-sm">
                       {subject.description}
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(subject.status)}>
-                        {getStatusLabel(subject.status)}
-                      </Badge>
+                      <Badge className={getStatusColor(subject.status)}>{getStatusLabel(subject.status)}</Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {new Date(subject.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">

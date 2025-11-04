@@ -1,9 +1,4 @@
-import {
-  LayoutDashboard,
-  UserCheck,
-  AlertTriangle,
-  type LucideIcon,
-} from "lucide-react";
+import { LayoutDashboard, UserCheck, AlertTriangle, type LucideIcon } from "lucide-react";
 
 export interface NavSubItem {
   title: string;

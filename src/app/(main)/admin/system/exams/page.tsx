@@ -5,14 +5,7 @@ import { Plus, Edit, Trash2, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { handleDeleteExam } from "../../handlers";
 import { generateMockExams, getStatusColor, getStatusLabel } from "../../utils";
@@ -44,7 +37,7 @@ export default function AdminExamsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{exams.length}</div>
-            <p className="text-xs text-muted-foreground">All exams</p>
+            <p className="text-muted-foreground text-xs">All exams</p>
           </CardContent>
         </Card>
 
@@ -54,7 +47,7 @@ export default function AdminExamsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{publishedExams}</div>
-            <p className="text-xs text-muted-foreground">Active</p>
+            <p className="text-muted-foreground text-xs">Active</p>
           </CardContent>
         </Card>
 
@@ -64,7 +57,7 @@ export default function AdminExamsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalSubmissions}</div>
-            <p className="text-xs text-muted-foreground">Expected</p>
+            <p className="text-muted-foreground text-xs">Expected</p>
           </CardContent>
         </Card>
 
@@ -74,7 +67,7 @@ export default function AdminExamsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{exams.filter((e) => e.status === "draft").length}</div>
-            <p className="text-xs text-muted-foreground">Not yet published</p>
+            <p className="text-muted-foreground text-xs">Not yet published</p>
           </CardContent>
         </Card>
       </div>
@@ -106,18 +99,16 @@ export default function AdminExamsPage() {
                     <TableCell className="font-mono text-sm font-semibold">{exam.code}</TableCell>
                     <TableCell className="font-medium">{exam.name}</TableCell>
                     <TableCell className="text-sm">{exam.subjectId}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {exam.examDate} {exam.examTime}
                     </TableCell>
-                    <TableCell className="text-sm flex items-center gap-1">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
+                    <TableCell className="flex items-center gap-1 text-sm">
+                      <Clock className="text-muted-foreground h-4 w-4" />
                       {exam.duration} min
                     </TableCell>
                     <TableCell className="text-sm font-medium">{exam.totalSubmissions}</TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(exam.status)}>
-                        {getStatusLabel(exam.status)}
-                      </Badge>
+                      <Badge className={getStatusColor(exam.status)}>{getStatusLabel(exam.status)}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">

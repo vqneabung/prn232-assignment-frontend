@@ -22,10 +22,7 @@ export async function handleReviewComplaint(complaintId: string): Promise<void> 
   }
 }
 
-export async function handleResolveComplaint(
-  complaintId: string,
-  resolution: string
-): Promise<void> {
+export async function handleResolveComplaint(complaintId: string, resolution: string): Promise<void> {
   try {
     console.log("Resolving complaint", { complaintId, resolution });
 
@@ -63,10 +60,7 @@ export async function handleRejectComplaint(complaintId: string): Promise<void> 
   }
 }
 
-export async function handleAssignComplaintToModerator(
-  complaintId: string,
-  moderatorId: string
-): Promise<void> {
+export async function handleAssignComplaintToModerator(complaintId: string, moderatorId: string): Promise<void> {
   try {
     console.log("Assigning complaint to moderator", { complaintId, moderatorId });
 
@@ -180,10 +174,7 @@ export async function handleRequestRemark(submissionId: string): Promise<void> {
   }
 }
 
-export async function handleAddVerificationNotes(
-  submissionId: string,
-  notes: string
-): Promise<void> {
+export async function handleAddVerificationNotes(submissionId: string, notes: string): Promise<void> {
   try {
     console.log("Adding verification notes", { submissionId, notes });
 
@@ -222,7 +213,7 @@ export async function handleReviewFairnessCase(submissionId: string): Promise<vo
 
 export async function handleResolveFairnessDiscrepancy(
   submissionId: string,
-  resolution: "accept_score1" | "accept_score2" | "average"
+  resolution: "accept_score1" | "accept_score2" | "average",
 ): Promise<void> {
   try {
     console.log("Resolving fairness discrepancy", { submissionId, resolution });

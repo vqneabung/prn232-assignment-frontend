@@ -15,7 +15,7 @@ export function AdminAppSidebar({ variant = "sidebar", collapsible = "icon" }: A
     <Sidebar variant={variant} collapsible={collapsible}>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             <span className="text-xs font-bold">A</span>
           </div>
           <div className="flex flex-col gap-0.5 leading-none">

@@ -5,14 +5,7 @@ import { Plus, Edit, Trash2, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { handleDeleteSemester } from "../../handlers";
 import { generateMockSemesters, getStatusColor, getStatusLabel } from "../../utils";
@@ -38,7 +31,7 @@ export default function AdminSemestersPage() {
       {/* Current Semester Info */}
       {activeSemester && (
         <Card className="border-blue-200 bg-blue-50">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div>
               <CardTitle className="text-base">Current Semester</CardTitle>
               <CardDescription>Now active</CardDescription>
@@ -49,13 +42,11 @@ export default function AdminSemestersPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold">{activeSemester.name}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {activeSemester.startDate} to {activeSemester.endDate}
                 </p>
               </div>
-              <Badge className={getStatusColor(activeSemester.status)}>
-                {getStatusLabel(activeSemester.status)}
-              </Badge>
+              <Badge className={getStatusColor(activeSemester.status)}>{getStatusLabel(activeSemester.status)}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -69,7 +60,7 @@ export default function AdminSemestersPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{semesters.length}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
+            <p className="text-muted-foreground text-xs">All time</p>
           </CardContent>
         </Card>
 
@@ -78,10 +69,8 @@ export default function AdminSemestersPage() {
             <CardTitle className="text-sm font-medium">Active</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {semesters.filter((s) => s.status === "ongoing").length}
-            </div>
-            <p className="text-xs text-muted-foreground">Now running</p>
+            <div className="text-2xl font-bold">{semesters.filter((s) => s.status === "ongoing").length}</div>
+            <p className="text-muted-foreground text-xs">Now running</p>
           </CardContent>
         </Card>
 
@@ -90,10 +79,8 @@ export default function AdminSemestersPage() {
             <CardTitle className="text-sm font-medium">Finished</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {semesters.filter((s) => s.status === "finished").length}
-            </div>
-            <p className="text-xs text-muted-foreground">Completed</p>
+            <div className="text-2xl font-bold">{semesters.filter((s) => s.status === "finished").length}</div>
+            <p className="text-muted-foreground text-xs">Completed</p>
           </CardContent>
         </Card>
 
@@ -102,10 +89,8 @@ export default function AdminSemestersPage() {
             <CardTitle className="text-sm font-medium">Planned</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {semesters.filter((s) => s.status === "planning").length}
-            </div>
-            <p className="text-xs text-muted-foreground">Future semesters</p>
+            <div className="text-2xl font-bold">{semesters.filter((s) => s.status === "planning").length}</div>
+            <p className="text-muted-foreground text-xs">Future semesters</p>
           </CardContent>
         </Card>
       </div>
@@ -134,16 +119,14 @@ export default function AdminSemestersPage() {
                   <TableRow key={semester.id}>
                     <TableCell className="font-mono text-sm font-semibold">{semester.code}</TableCell>
                     <TableCell className="font-medium">{semester.name}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {semester.startDate} to {semester.endDate}
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
+                    <TableCell className="text-muted-foreground max-w-xs truncate text-sm">
                       {semester.description}
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(semester.status)}>
-                        {getStatusLabel(semester.status)}
-                      </Badge>
+                      <Badge className={getStatusColor(semester.status)}>{getStatusLabel(semester.status)}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">

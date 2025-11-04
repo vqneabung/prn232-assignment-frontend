@@ -7,15 +7,15 @@ import { ViolationRecord, ViolationType, ViolationDetail } from "./types";
 export function generateMockViolations(fileName: string): ViolationRecord[] {
   // Parse student info from filename (e.g., "NguyenVanA_21IT001_ClassA.zip")
   fileName.replace(/\.[^/.]+$/, "").split("_");
-  
+
   const mockRecords: ViolationRecord[] = [];
-  
+
   // Generate 3-8 random records per file upload
   const recordCount = Math.floor(Math.random() * 6) + 3;
-  
+
   for (let i = 0; i < recordCount; i++) {
     const violations = generateRandomViolations();
-    
+
     mockRecords.push({
       id: `${Date.now()}-${i}`,
       studentName: `Sinh viên ${i + 1}`,
@@ -24,7 +24,7 @@ export function generateMockViolations(fileName: string): ViolationRecord[] {
       violations,
     });
   }
-  
+
   return mockRecords;
 }
 
@@ -41,14 +41,14 @@ function generateRandomViolations(): ViolationDetail[] {
   ];
 
   const severities = ["low", "medium", "high"] as const;
-  
+
   const violationCount = Math.floor(Math.random() * 4) + 1; // 1-4 violations per record
   const violations: ViolationDetail[] = [];
   const selected = new Set<ViolationType>();
-  
+
   while (violations.length < violationCount) {
     const type = violationTypes[Math.floor(Math.random() * violationTypes.length)];
-    
+
     if (!selected.has(type)) {
       selected.add(type);
       violations.push({
@@ -58,7 +58,7 @@ function generateRandomViolations(): ViolationDetail[] {
       });
     }
   }
-  
+
   return violations;
 }
 
@@ -90,11 +90,11 @@ export function isValidArchiveFile(file: File): boolean {
     "application/x-rar-compressed",
     "application/vnd.rar",
   ];
-  
+
   const validExtensions = [".zip", ".rar"];
-  
+
   const hasValidType = validTypes.includes(file.type);
   const hasValidExtension = validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext));
-  
+
   return hasValidType || hasValidExtension;
 }

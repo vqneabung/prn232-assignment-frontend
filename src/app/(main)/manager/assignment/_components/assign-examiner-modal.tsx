@@ -7,13 +7,7 @@ import { X, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -54,7 +48,7 @@ export function AssignExaminerModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -72,17 +66,14 @@ export function AssignExaminerModal({
         <div className="space-y-6">
           {/* Submissions Summary */}
           <div>
-            <h3 className="font-semibold mb-3">Selected Submissions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+            <h3 className="mb-3 font-semibold">Selected Submissions</h3>
+            <div className="grid max-h-40 grid-cols-1 gap-2 overflow-y-auto md:grid-cols-2">
               {selectedSubmissions.map((sub) => (
-                <div
-                  key={sub.id}
-                  className="flex items-center gap-2 p-2 bg-gray-50 rounded border"
-                >
-                  <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0" />
-                  <div className="flex-1 min-w-0">
+                <div key={sub.id} className="flex items-center gap-2 rounded border bg-gray-50 p-2">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" />
+                  <div className="min-w-0 flex-1">
                     <p className="font-mono text-xs">{sub.id}</p>
-                    <p className="text-xs text-muted-foreground truncate">{sub.studentName}</p>
+                    <p className="text-muted-foreground truncate text-xs">{sub.studentName}</p>
                   </div>
                 </div>
               ))}
@@ -91,7 +82,7 @@ export function AssignExaminerModal({
 
           {/* Examiners Selection */}
           <div>
-            <h3 className="font-semibold mb-3">Select Examiners (for double grading)</h3>
+            <h3 className="mb-3 font-semibold">Select Examiners (for double grading)</h3>
             <div className="space-y-3">
               {examiners.map((examiner) => (
                 <div key={examiner.examinerId} className="flex items-center space-x-3">
@@ -100,10 +91,7 @@ export function AssignExaminerModal({
                     checked={selectedExaminers.has(examiner.examinerId)}
                     onChange={() => handleExaminerToggle(examiner.examinerId)}
                   />
-                  <Label
-                    htmlFor={examiner.examinerId}
-                    className="flex-1 cursor-pointer font-normal"
-                  >
+                  <Label htmlFor={examiner.examinerId} className="flex-1 cursor-pointer font-normal">
                     <div className="flex items-center justify-between">
                       <span>{examiner.examinerName}</span>
                       <div className="flex gap-2">
@@ -121,7 +109,7 @@ export function AssignExaminerModal({
           {/* Examiner Workload Preview */}
           {selectedExaminers.size > 0 && (
             <div>
-              <h3 className="font-semibold mb-3">Examiner Workload Preview</h3>
+              <h3 className="mb-3 font-semibold">Examiner Workload Preview</h3>
               <Table className="text-sm">
                 <TableHeader>
                   <TableRow>
@@ -150,7 +138,7 @@ export function AssignExaminerModal({
           )}
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          <div className="flex justify-end gap-3 border-t pt-4">
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>

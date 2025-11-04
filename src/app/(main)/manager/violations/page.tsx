@@ -5,19 +5,9 @@ import { AlertTriangle, Eye, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import {
-  handleReviewViolation,
-  handleResolveViolation,
-} from "../handlers";
+import { handleReviewViolation, handleResolveViolation } from "../handlers";
 
 interface Violation {
   id: string;
@@ -121,7 +111,7 @@ export default function ManagerViolationManagementPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{mockViolations.length}</div>
-            <p className="text-xs text-muted-foreground">{pendingCount} pending</p>
+            <p className="text-muted-foreground text-xs">{pendingCount} pending</p>
           </CardContent>
         </Card>
 
@@ -143,12 +133,8 @@ export default function ManagerViolationManagementPage() {
             <div className="text-2xl font-bold">
               {mockViolations.filter((v) => v.status === "resolved").length}/{mockViolations.length}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {Math.round(
-                (mockViolations.filter((v) => v.status === "resolved").length /
-                  mockViolations.length) *
-                  100
-              )}
+            <p className="text-muted-foreground text-xs">
+              {Math.round((mockViolations.filter((v) => v.status === "resolved").length / mockViolations.length) * 100)}
               % resolved
             </p>
           </CardContent>
@@ -202,23 +188,19 @@ export default function ManagerViolationManagementPage() {
                         }
                       >
                         {violation.status === "resolved" ? (
-                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                          <CheckCircle2 className="mr-1 h-3 w-3" />
                         ) : (
-                          <AlertTriangle className="h-3 w-3 mr-1" />
+                          <AlertTriangle className="mr-1 h-3 w-3" />
                         )}
                         {violation.status.charAt(0).toUpperCase() + violation.status.slice(1)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {violation.reportedAt.toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleReviewViolation(violation.id)}
-                        >
+                        <Button variant="ghost" size="sm" onClick={() => handleReviewViolation(violation.id)}>
                           <Eye className="h-4 w-4" />
                           Review
                         </Button>
@@ -254,9 +236,9 @@ export default function ManagerViolationManagementPage() {
                 <div key={key} className="flex items-center justify-between">
                   <span className="text-sm">{label}</span>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-200 rounded-full h-2 w-24">
+                    <div className="h-2 w-24 flex-1 rounded-full bg-gray-200">
                       <div
-                        className="bg-blue-500 h-2 rounded-full"
+                        className="h-2 rounded-full bg-blue-500"
                         style={{
                           width: `${(count / mockViolations.length) * 100}%`,
                         }}

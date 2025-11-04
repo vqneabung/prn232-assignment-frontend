@@ -31,7 +31,7 @@ export default function AdminApprovalPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{approvals.length}</div>
-            <p className="text-xs text-muted-foreground">All exams</p>
+            <p className="text-muted-foreground text-xs">All exams</p>
           </CardContent>
         </Card>
 
@@ -60,10 +60,8 @@ export default function AdminApprovalPage() {
             <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {Math.round((approvedCount / approvals.length) * 100)}%
-            </div>
-            <p className="text-xs text-muted-foreground">Approved of total</p>
+            <div className="text-2xl font-bold">{Math.round((approvedCount / approvals.length) * 100)}%</div>
+            <p className="text-muted-foreground text-xs">Approved of total</p>
           </CardContent>
         </Card>
       </div>
@@ -91,9 +89,7 @@ export default function AdminApprovalPage() {
               </TableHeader>
               <TableBody>
                 {approvals.map((approval) => {
-                  const progress = Math.round(
-                    (approval.completedGrading / approval.totalStudents) * 100
-                  );
+                  const progress = Math.round((approval.completedGrading / approval.totalStudents) * 100);
                   return (
                     <TableRow key={approval.id}>
                       <TableCell className="font-medium">{approval.examName}</TableCell>
@@ -101,11 +97,8 @@ export default function AdminApprovalPage() {
                       <TableCell className="font-medium">{approval.completedGrading}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2 w-16">
-                            <div
-                              className="bg-blue-500 h-2 rounded-full"
-                              style={{ width: `${progress}%` }}
-                            ></div>
+                          <div className="h-2 w-16 flex-1 rounded-full bg-gray-200">
+                            <div className="h-2 rounded-full bg-blue-500" style={{ width: `${progress}%` }}></div>
                           </div>
                           <span className="text-xs font-medium">{progress}%</span>
                         </div>
@@ -113,16 +106,12 @@ export default function AdminApprovalPage() {
                       <TableCell className="font-medium">{approval.averageScore.toFixed(1)}</TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(approval.status)}>
-                          {approval.status === "pending" && (
-                            <AlertCircle className="h-3 w-3 mr-1" />
-                          )}
-                          {approval.status === "approved" && (
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                          )}
+                          {approval.status === "pending" && <AlertCircle className="mr-1 h-3 w-3" />}
+                          {approval.status === "approved" && <CheckCircle2 className="mr-1 h-3 w-3" />}
                           {getStatusLabel(approval.status)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-sm">
                         {new Date(approval.submittedAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="text-right">
@@ -134,7 +123,7 @@ export default function AdminApprovalPage() {
                               className="text-green-600 hover:text-green-700"
                               onClick={() => handleApproveResults(approval.id)}
                             >
-                              <CheckCircle2 className="h-4 w-4 mr-1" />
+                              <CheckCircle2 className="mr-1 h-4 w-4" />
                               Approve
                             </Button>
                             <Button
@@ -147,11 +136,7 @@ export default function AdminApprovalPage() {
                             </Button>
                           </div>
                         ) : (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDownloadReport(approval.id)}
-                          >
+                          <Button variant="ghost" size="sm" onClick={() => handleDownloadReport(approval.id)}>
                             <Download className="h-4 w-4" />
                           </Button>
                         )}
@@ -170,7 +155,7 @@ export default function AdminApprovalPage() {
         <CardHeader>
           <CardTitle className="text-base">Approval Process</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground space-y-2">
+        <CardContent className="text-muted-foreground space-y-2 text-sm">
           <p>
             • <strong>Review:</strong> Verify all grades have been completed and recorded
           </p>

@@ -9,28 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import {
-  generateMockSubmissions,
-  getExamList,
-  getStatusLabel,
-  getStatusBadgeColor,
-} from "../assignment/utils";
+import { generateMockSubmissions, getExamList, getStatusLabel, getStatusBadgeColor } from "../assignment/utils";
 
 export default function ManagerAssignmentPage() {
   const [selectedExam, setSelectedExam] = useState<string>("EX-001");
@@ -44,7 +26,7 @@ export default function ManagerAssignmentPage() {
   // Filter submissions by selected exam
   const filteredSubmissions = useMemo(
     () => submissions.filter((sub) => sub.examId === selectedExam),
-    [submissions, selectedExam]
+    [submissions, selectedExam],
   );
 
   const handleSelectRow = (id: string) => {
@@ -108,11 +90,7 @@ export default function ManagerAssignmentPage() {
                 {filteredSubmissions.length} submissions for {exams.find((e) => e.id === selectedExam)?.name}
               </CardDescription>
             </div>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              disabled={selectedRows.size === 0}
-              className="gap-2"
-            >
+            <Button onClick={() => setIsModalOpen(true)} disabled={selectedRows.size === 0} className="gap-2">
               <ChevronDown className="h-4 w-4" />
               Assign Examiners ({selectedRows.size})
             </Button>
@@ -160,7 +138,7 @@ export default function ManagerAssignmentPage() {
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-muted-foreground text-sm">
                       {new Date(submission.submittedAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>

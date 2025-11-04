@@ -10,6 +10,7 @@ Hệ thống authentication được xây dựng với 2 lớp (tạm thời):
 ## Cách Hoạt Động
 
 ### 1. Login
+
 ```typescript
 import { setAuth } from "@/lib/auth-utils";
 
@@ -24,6 +25,7 @@ setAuth(userEmail);
 - Middleware check cookie để verify protected routes
 
 ### 2. Protected Routes
+
 ```typescript
 // middleware.ts sẽ check auth_email cookie
 // Nếu không có cookie → redirect /auth/login
@@ -33,6 +35,7 @@ setAuth(userEmail);
 Protected routes: `/dashboard`, `/user`
 
 ### 3. Logout
+
 ```typescript
 import { clearAuth } from "@/lib/auth-utils";
 
@@ -89,6 +92,7 @@ Middleware detect no cookie → redirect /auth/login
 ## Usage Examples
 
 ### Check Authentication Status
+
 ```typescript
 "use client";
 import { useAuth } from "@/hooks/use-auth";
@@ -104,6 +108,7 @@ export function Dashboard() {
 ```
 
 ### Set Auth (Login)
+
 ```typescript
 import { setAuth } from "@/lib/auth-utils";
 
@@ -114,6 +119,7 @@ router.push("/dashboard");
 ```
 
 ### Clear Auth (Logout)
+
 ```typescript
 import { clearAuth } from "@/lib/auth-utils";
 
@@ -122,13 +128,14 @@ router.push("/auth/login");
 ```
 
 ### Utility Functions
+
 ```typescript
-import { 
-  setAuth,           // Set email + localStorage
-  clearAuth,         // Clear email + localStorage
-  isAuthenticated,   // Check if authenticated
-  getCurrentEmail,   // Get current email
-  restoreAuth        // Restore from localStorage
+import {
+  setAuth, // Set email + localStorage
+  clearAuth, // Clear email + localStorage
+  isAuthenticated, // Check if authenticated
+  getCurrentEmail, // Get current email
+  restoreAuth, // Restore from localStorage
 } from "@/lib/auth-utils";
 
 // Check auth
@@ -142,16 +149,18 @@ if (isAuthenticated()) {
 Trong tương lai, để migrate sang JWT:
 
 ### Step 1: Backend
+
 - Return JWT token khi login thành công
 - Token contain: `{ email, role, exp, ... }`
 
 ### Step 2: Frontend - Update setAuth
+
 ```typescript
 // src/lib/auth-utils.ts
 export function setAuth(token: string) {
   // Lưu token vào cookie (không HttpOnly để có thể decode)
   document.cookie = `token=${token}; path=/; SameSite=Lax`;
-  
+
   // Decode token lấy email
   const decoded = jwtDecode(token);
   authStore.setState({ email: decoded.email });
@@ -160,6 +169,7 @@ export function setAuth(token: string) {
 ```
 
 ### Step 3: Update Middleware
+
 ```typescript
 // src/middleware.ts
 import { jwtDecode } from "jwt-decode";
@@ -167,12 +177,12 @@ import { jwtDecode } from "jwt-decode";
 try {
   const token = request.cookies.get("token")?.value;
   if (!token) throw new Error("No token");
-  
+
   const decoded = jwtDecode(token);
   if (!decoded.email) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
-  
+
   return NextResponse.next();
 } catch (error) {
   return NextResponse.redirect(new URL("/auth/login", request.url));
@@ -184,6 +194,7 @@ try {
 ## Current Architecture
 
 ### Temporary (Current)
+
 ```
 localStorage (auth_email)
     ↓
@@ -197,6 +208,7 @@ Protected Routes
 ```
 
 ### Future (JWT)
+
 ```
 localStorage (token)
     ↓
@@ -241,6 +253,7 @@ Request → Middleware
 ## Testing
 
 ### Login
+
 ```bash
 # Set auth in browser console
 localStorage.setItem('auth_email', 'test@example.com');
@@ -248,6 +261,7 @@ localStorage.setItem('auth_email', 'test@example.com');
 ```
 
 ### Logout
+
 ```bash
 # Clear auth in browser console
 localStorage.removeItem('auth_email');

@@ -38,7 +38,7 @@ export async function handleUpdateSubject(
     name: string;
     credits: number;
     description?: string;
-  }>
+  }>,
 ): Promise<void> {
   try {
     console.log("Updating subject", { subjectId, data });
@@ -117,7 +117,7 @@ export async function handleUpdateSemester(
     startDate: Date;
     endDate: Date;
     description?: string;
-  }>
+  }>,
 ): Promise<void> {
   try {
     console.log("Updating semester", { semesterId, data });
@@ -219,7 +219,7 @@ export async function handleUpdateExam(
     duration: number;
     maxScore: number;
     description?: string;
-  }>
+  }>,
 ): Promise<void> {
   try {
     console.log("Updating exam", { examId, data });
@@ -331,10 +331,7 @@ export async function handleApproveResults(examId: string): Promise<void> {
   }
 }
 
-export async function handleRejectResults(
-  examId: string,
-  reason: string
-): Promise<void> {
+export async function handleRejectResults(examId: string, reason: string): Promise<void> {
   try {
     console.log("Rejecting results", { examId, reason });
 
@@ -382,7 +379,7 @@ export async function handleGenerateReport(
     subject?: string;
     examiner?: string;
     dateRange?: { start: Date; end: Date };
-  }
+  },
 ): Promise<void> {
   try {
     console.log("Generating report", { type, filters });
@@ -404,10 +401,7 @@ export async function handleGenerateReport(
   }
 }
 
-export async function handleExportReport(
-  reportId: string,
-  format: "pdf" | "xlsx" | "csv"
-): Promise<void> {
+export async function handleExportReport(reportId: string, format: "pdf" | "xlsx" | "csv"): Promise<void> {
   try {
     console.log("Exporting report", { reportId, format });
 
@@ -466,7 +460,7 @@ export async function handleDeleteReport(reportId: string): Promise<void> {
 export async function handleScheduleReportGeneration(
   type: string,
   schedule: "daily" | "weekly" | "monthly",
-  email?: string
+  email?: string,
 ): Promise<void> {
   try {
     console.log("Scheduling report generation", { type, schedule, email });
@@ -491,7 +485,7 @@ export async function handleScheduleReportGeneration(
  */
 
 export async function handleViewAuditLog(
-  resourceType: "subject" | "semester" | "exam" | "approval" | "report"
+  resourceType: "subject" | "semester" | "exam" | "approval" | "report",
 ): Promise<void> {
   try {
     console.log("Viewing audit log for:", resourceType);

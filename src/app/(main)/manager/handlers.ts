@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { toast } from "sonner";
 
@@ -6,10 +6,7 @@ import { toast } from "sonner";
  * Manager Assignment Handlers
  */
 
-export async function handleAssignExaminers(
-  submissionIds: string[],
-  examinerIds: string[]
-): Promise<void> {
+export async function handleAssignExaminers(submissionIds: string[], examinerIds: string[]): Promise<void> {
   try {
     console.log("Assigning examiners to submissions", {
       submissionIds,
@@ -35,7 +32,7 @@ export async function handleAssignExaminers(
 export async function handleReassignExaminer(
   submissionId: string,
   oldExaminerId: string,
-  newExaminerId: string
+  newExaminerId: string,
 ): Promise<void> {
   try {
     console.log("Reassigning examiner", {
@@ -59,10 +56,7 @@ export async function handleReassignExaminer(
   }
 }
 
-export async function handleRemoveExaminer(
-  submissionId: string,
-  examinerId: string
-): Promise<void> {
+export async function handleRemoveExaminer(submissionId: string, examinerId: string): Promise<void> {
   try {
     console.log("Removing examiner from submission", {
       submissionId,
@@ -102,10 +96,7 @@ export async function handleReviewViolation(violationId: string): Promise<void> 
   }
 }
 
-export async function handleResolveViolation(
-  violationId: string,
-  action: "give_zero" | "dismiss"
-): Promise<void> {
+export async function handleResolveViolation(violationId: string, action: "give_zero" | "dismiss"): Promise<void> {
   try {
     console.log("Resolving violation", { violationId, action });
 
@@ -125,10 +116,7 @@ export async function handleResolveViolation(
   }
 }
 
-export async function handleQuickResolveViolation(
-  violationId: string,
-  resolution: string
-): Promise<void> {
+export async function handleQuickResolveViolation(violationId: string, resolution: string): Promise<void> {
   try {
     console.log("Quick resolving violation", { violationId, resolution });
 
