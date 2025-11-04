@@ -1,8 +1,9 @@
 "use client";
 
 import { ReactNode } from "react";
-import { useAuth } from "@/hooks/use-auth";
+
 import { Spinner } from "@/components/ui/spinner";
+import { useAuth } from "@/hooks/use-auth";
 
 interface ProtectedRouteProps {
   children: ReactNode;

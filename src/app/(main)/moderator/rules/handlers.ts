@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+
 import { Rule, RuleCreateInput, RuleUpdateInput } from "./types";
 
 /**

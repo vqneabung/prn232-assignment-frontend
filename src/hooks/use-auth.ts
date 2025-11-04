@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
+
 import { authStore } from "@/stores/auth/authStore";
 
 export function useAuth() {

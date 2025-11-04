@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+
 import { CheckCircle2, Clock, ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { generateMockGradeList } from "../utils";
 import { getStatusLabel, getStatusColor } from "../utils";

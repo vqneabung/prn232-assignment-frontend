@@ -51,30 +51,30 @@ export default defineConfig([
 
       // Import/Export Rules
       "import/no-mutable-exports": "error",
-      "import/order": [
-        "error",
-        {
-          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-          pathGroups: [
-            {
-              pattern: "react",
-              group: "external",
-              position: "before",
-            },
-            {
-              pattern: "{next,next/**}",
-              group: "external",
-              position: "before",
-            },
-          ],
-          pathGroupsExcludedImportTypes: [],
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
-        },
-      ],
+      // "import/order": [
+      //   "error",
+      //   {
+      //     groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+      //     pathGroups: [
+      //       {
+      //         pattern: "react",
+      //         group: "external",
+      //         position: "before",
+      //       },
+      //       {
+      //         pattern: "{next,next/**}",
+      //         group: "external",
+      //         position: "before",
+      //       },
+      //     ],
+      //     pathGroupsExcludedImportTypes: [],
+      //     "newlines-between": "always",
+      //     alphabetize: {
+      //       order: "asc",
+      //       caseInsensitive: true,
+      //     },
+      //   },
+      // ],
       "import/newline-after-import": "error",
       "import/no-unresolved": [
         "error",

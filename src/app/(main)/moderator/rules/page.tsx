@@ -24,6 +24,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 
+import { CreateRuleModal } from "./_components/create-rule-modal";
 import { Rule } from "./types";
 import { generateMockRules, getSeverityColor } from "./utils";
 import {
@@ -34,7 +35,6 @@ import {
   handleTestRulePattern,
   handleDuplicateRule,
 } from "./handlers";
-import { CreateRuleModal } from "./_components/create-rule-modal";
 import { EditRuleModal } from "./_components/edit-rule-modal";
 import { RulesStats } from "./_components/rules-stats";
 
