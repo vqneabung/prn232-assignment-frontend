@@ -3,9 +3,9 @@
 import { useState, useMemo } from "react";
 import { MoreHorizontal, Plus, Search, Trash2, Edit, Copy, BarChart3 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
