@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { MoreHorizontal, Plus, Search, Trash2, Edit, Copy, BarChart3 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -22,21 +22,20 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { toast } from "sonner";
 
 import { CreateRuleModal } from "./_components/create-rule-modal";
-import { Rule } from "./types";
-import { generateMockRules, getSeverityColor } from "./utils";
+import { Rule, RuleCreateInput } from "./types";
+import { generateMockRules, getSeverityColor, mappingToRulesFromResponse } from "./utils";
 import {
   handleCreateRule,
   handleUpdateRule,
   handleDeleteRule,
-  handleToggleRuleActive,
   handleTestRulePattern,
   handleDuplicateRule,
 } from "./handlers";
 import { EditRuleModal } from "./_components/edit-rule-modal";
 import { RulesStats } from "./_components/rules-stats";
+import { ruleApi } from "@/lib/api/rule/rule";
 
 export default function RulesPage() {
   const [rules, setRules] = useState<Rule[]>(generateMockRules());
@@ -48,6 +47,21 @@ export default function RulesPage() {
     isOpen: boolean;
     ruleId: string | null;
   }>({ isOpen: false, ruleId: null });
+  const ruleCounterRef = useRef(rules.length);
+
+   useEffect(() => {
+    const fetchRules = async () => {
+      // Fetch rules from API and update state
+      const response = await ruleApi.getAll();
+      if (response.success) {
+        const rules = mappingToRulesFromResponse(response.data);
+        if (rules) {
+          setRules(rules);
+        }
+      }
+    };
+    fetchRules();
+  }, []);
 
   const filteredRules = useMemo(() => {
     return rules.filter(
@@ -58,24 +72,15 @@ export default function RulesPage() {
     );
   }, [rules, searchTerm]);
 
-  const onCreateRule = async (ruleData: Rule) => {
-    await handleCreateRule({
-      name: ruleData.name,
-      pattern: ruleData.pattern,
-      severity: ruleData.severity,
-      description: ruleData.description,
-    });
+  const onCreateRule = async (ruleData: RuleCreateInput) => {
+    await handleCreateRule(ruleData);
+    ruleCounterRef.current += 1;
     const newRule: Rule = {
-      ruleId: `RULE-${rules.length + 1}`,
+      ruleId: `RULE-${String(ruleCounterRef.current).padStart(3, "0")}`,
       name: ruleData.name,
       pattern: ruleData.pattern,
       severity: ruleData.severity,
       description: ruleData.description,
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: "Current User",
-      detectionCount: 0,
     };
     setRules([...rules, newRule]);
     setShowCreateModal(false);
@@ -97,22 +102,13 @@ export default function RulesPage() {
     setDeleteConfirm({ isOpen: false, ruleId: null });
   };
 
-  const onToggleActive = async (rule: Rule) => {
-    const success = await handleToggleRuleActive(rule.ruleId, !rule.isActive);
-    if (success) {
-      setRules(rules.map((r) => (r.ruleId === rule.ruleId ? { ...r, isActive: !r.isActive } : r)));
-    }
-  };
-
   const onDuplicateRule = async (rule: Rule) => {
     await handleDuplicateRule(rule.ruleId);
+    ruleCounterRef.current += 1;
     const newRule: Rule = {
       ...rule,
-      ruleId: `RULE-${Math.random().toString(36).substr(2, 5).toUpperCase()}`,
+      ruleId: `RULE-${String(ruleCounterRef.current).padStart(3, "0")}`,
       name: `${rule.name} (Copy)`,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      detectionCount: 0,
     };
     setRules([...rules, newRule]);
   };
@@ -199,10 +195,6 @@ export default function RulesPage() {
                         >
                           <Edit className="mr-2 h-4 w-4" />
                           Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onToggleActive(rule)}>
-                          <Badge className="mr-2 h-3 w-3" />
-                          {rule.isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onDuplicateRule(rule)}>
                           <Copy className="mr-2 h-4 w-4" />

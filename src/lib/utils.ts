@@ -1,3 +1,4 @@
+import { Rule } from "@/app/(main)/moderator/rules/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -40,3 +41,4 @@ export function formatCurrency(
 
   return new Intl.NumberFormat(locale, formatOptions).format(amount);
 }
+

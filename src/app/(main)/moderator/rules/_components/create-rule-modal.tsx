@@ -16,7 +16,7 @@ import { RuleCreateInput } from "../types";
 interface CreateRuleModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: Record<string, unknown>) => Promise<void>;
+  onSubmit: (data: RuleCreateInput) => Promise<void>;
 }
 
 export function CreateRuleModal({ open, onOpenChange, onSubmit }: CreateRuleModalProps) {

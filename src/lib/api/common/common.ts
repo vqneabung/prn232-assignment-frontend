@@ -4,6 +4,8 @@ export const headers: HeadersInit = {
   "Content-Type": "application/json",
 };
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 export async function commonFetch(
   url: string,
   method: string,
@@ -14,11 +16,14 @@ export async function commonFetch(
   // Browser will automatically set it with proper boundary
   const finalHeaders = body instanceof FormData ? headersOverride : { ...headers, ...headersOverride };
 
-  const response = await fetch(url, {
+  console.log("Request URL:", baseURL + url);
+
+  const response = await fetch(baseURL + url, {
     method,
     headers: finalHeaders,
     body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : null,
   });
+
 
   if (!response.ok || response.status < 200 || response.status >= 300) {
     return {

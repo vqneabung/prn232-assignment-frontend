@@ -8,11 +8,6 @@ export interface Rule {
   pattern: string;
   severity: "low" | "medium" | "high" | "critical";
   description: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  detectionCount?: number;
 }
 
 export interface RuleCreateInput {

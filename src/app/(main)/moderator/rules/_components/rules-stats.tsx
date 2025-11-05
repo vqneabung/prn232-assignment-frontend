@@ -14,8 +14,8 @@ export function RulesStats({ rules }: RulesStatsProps) {
         <div className="text-2xl font-bold">{rules.length}</div>
       </div>
       <div className="rounded-lg border p-4">
-        <div className="text-muted-foreground text-sm font-medium">Active Rules</div>
-        <div className="text-2xl font-bold">{rules.filter((r) => r.isActive).length}</div>
+        <div className="text-muted-foreground text-sm font-medium">High Severity Rules</div>
+        <div className="text-2xl font-bold">{rules.filter((r) => r.severity === "high" || r.severity === "critical").length}</div>
       </div>
       <div className="rounded-lg border p-4">
         <div className="text-muted-foreground text-sm font-medium">Critical Rules</div>
