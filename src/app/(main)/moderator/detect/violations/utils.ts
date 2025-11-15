@@ -1,83 +1,75 @@
-import { ViolationRecord, ViolationType, ViolationDetail } from "./types";
+import { ViolationRecord, DetectionRule, Violation } from "./types";
 
 /**
- * Mock data generator - Simulates detecting violations from uploaded file
- * In real app, this would be processed by backend
+ * Mock data generator - Simulates API response for violation detection
+ * In real app, this would be the actual API response from backend
  */
-export function generateMockViolations(fileName: string): ViolationRecord[] {
-  // Parse student info from filename (e.g., "NguyenVanA_21IT001_ClassA.zip")
-  fileName.replace(/\.[^/.]+$/, "").split("_");
-
-  const mockRecords: ViolationRecord[] = [];
-
-  // Generate 3-8 random records per file upload
-  const recordCount = Math.floor(Math.random() * 6) + 3;
-
-  for (let i = 0; i < recordCount; i++) {
-    const violations = generateRandomViolations();
-
-    mockRecords.push({
-      id: `${Date.now()}-${i}`,
-      studentName: `Sinh viên ${i + 1}`,
-      studentId: `${20}IT${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`,
-      classCode: `IT${Math.floor(Math.random() * 5) + 1}`,
-      violations,
-    });
-  }
-
-  return mockRecords;
-}
-
-/**
- * Generate random violations for a student record
- */
-function generateRandomViolations(): ViolationDetail[] {
-  const violationTypes: ViolationType[] = [
-    "incorrect_filename",
-    "invalid_naming_convention",
-    "source_code_duplicate",
-    "suspicious_code_pattern",
-    "missing_documentation",
+export function generateMockViolations(): ViolationRecord[] {
+  const files = [
+    "DataAccess\\efpt.config.json",
+    "DataAccess\\SU25LeopardDBContext.cs",
+    "PRN231_SU25_SE183208.api\\Program.cs",
+    "DataAccess\\Repositories\\AccountRepo.cs",
+    "DataAccess\\Repositories\\LeopardProfileRepo.cs",
   ];
 
-  const severities = ["low", "medium", "high"] as const;
+  const rules: DetectionRule[] = [
+    {
+      ruleId: 1,
+      name: "Detect Context Keyword",
+      pattern: "context",
+      severity: "high",
+      description: "Avoid using 'context' directly in code.",
+      violations: generateViolations(1, files),
+    },
+    {
+      ruleId: 2,
+      name: "Avoid Magic Numbers",
+      pattern: "\\b\\d{3,}\\b",
+      severity: "medium",
+      description: "Magic numbers should be replaced with named constants.",
+      violations: generateViolations(2, files.slice(0, 3)),
+    },
+    {
+      ruleId: 3,
+      name: "Missing Error Handling",
+      pattern: "try|catch|throw",
+      severity: "high",
+      description: "Functions should include proper error handling.",
+      violations: generateViolations(3, files.slice(1, 4)),
+    },
+  ];
 
-  const violationCount = Math.floor(Math.random() * 4) + 1; // 1-4 violations per record
-  const violations: ViolationDetail[] = [];
-  const selected = new Set<ViolationType>();
+  // Return violations grouped by file
+  const violationsByFile = new Map<string, ViolationRecord>();
 
-  while (violations.length < violationCount) {
-    const type = violationTypes[Math.floor(Math.random() * violationTypes.length)];
+  rules.forEach((rule) => {
+    rule.violations.forEach((violation) => {
+      const key = violation.filePath;
+      if (!violationsByFile.has(key)) {
+        violationsByFile.set(key, {
+          filePath: violation.filePath,
+          message: violation.message,
+          rule,
+        });
+      }
+    });
+  });
 
-    if (!selected.has(type)) {
-      selected.add(type);
-      violations.push({
-        type,
-        message: getViolationMessage(type),
-        severity: severities[Math.floor(Math.random() * severities.length)],
-      });
-    }
-  }
-
-  return violations;
+  return Array.from(violationsByFile.values());
 }
 
 /**
- * Get human-readable message for violation type
+ * Generate violations for a rule
  */
-function getViolationMessage(type: ViolationType): string {
-  switch (type) {
-    case "incorrect_filename":
-      return "Tên file không tuân theo định dạng quy định";
-    case "invalid_naming_convention":
-      return "Biến/hàm không tuân theo camelCase hoặc snake_case";
-    case "source_code_duplicate":
-      return "Phát hiện 85% tương đồng với bài nộp khác";
-    case "suspicious_code_pattern":
-      return "Mẫu mã không phù hợp với yêu cầu";
-    case "missing_documentation":
-      return "Thiếu comment hoặc tài liệu trong code";
-  }
+function generateViolations(ruleId: number, files: string[]): Violation[] {
+  return files.map((filePath, index) => ({
+    violationId: 1000 + ruleId * 100 + index,
+    submissionId: 1002,
+    ruleId,
+    filePath,
+    message: `Violation detected in ${filePath}`,
+  }));
 }
 
 /**

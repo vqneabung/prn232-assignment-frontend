@@ -4,8 +4,9 @@ export const headers: HeadersInit = {
   "Content-Type": "application/json",
 };
 
+export const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function commonFetch(
+export async function commonApiFetch(
   url: string,
   method: string,
   body?: any,
@@ -15,7 +16,7 @@ export async function commonFetch(
   // Browser will automatically set it with proper boundary
   const finalHeaders = body instanceof FormData ? headersOverride : { ...headers, ...headersOverride };
 
-  const response = await fetch(url, {
+  const response = await fetch(baseURL + url, {
     method,
     headers: finalHeaders,
     body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : null,
@@ -40,18 +41,18 @@ export async function commonFetch(
   } as BaseResponse;
 }
 
-export async function commonGet(url: string): Promise<BaseResponse> {
-  return commonFetch(url, "GET");
+export async function commonApiGet(url: string): Promise<BaseResponse> {
+  return commonApiFetch(url, "GET");
 }
 
-export async function commonPost(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonFetch(url, "POST", body, headersOverride);
+export async function commonApiPost(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
+  return commonApiFetch(url, "POST", body, headersOverride);
 }
 
-export async function commonPut(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonFetch(url, "PUT", body, headersOverride);
+export async function commonApiPut(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
+  return commonApiFetch(url, "PUT", body, headersOverride);
 }
 
-export async function commonDelete(url: string): Promise<BaseResponse> {
-  return commonFetch(url, "DELETE");
+export async function commonApiDelete(url: string): Promise<BaseResponse> {
+  return commonApiFetch(url, "DELETE");
 }

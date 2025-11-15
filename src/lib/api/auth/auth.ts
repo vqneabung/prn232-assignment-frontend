@@ -1,7 +1,8 @@
 import { commonPost } from "../common/common";
 
 export const authApi = {
-  login: async (email: string, password: string) => {
-    return commonPost("/api/auth/login", { email, password });
+  login: async (userName: string, password: string) => {
+    const response = await commonPost("/api/auth/login", { userName, password });
+    return response;
   },
 };

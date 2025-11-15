@@ -1,9 +1,9 @@
-import { commonGet } from "../common/common"
+import { commonApiGet } from "../common/common-api";
 
-const ruleBasePath = "/api/rule"
+const ruleBasePath = "/rule"
 
 export const ruleApi = {
     getAll: async () => {
-        return commonGet(ruleBasePath);
+        return commonApiGet(ruleBasePath);
     }
-}
+};

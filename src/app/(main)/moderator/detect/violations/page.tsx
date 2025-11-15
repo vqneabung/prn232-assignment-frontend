@@ -11,14 +11,14 @@ export default function DetectViolationsPage() {
   const [violations, setViolations] = useState<ViolationRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async () => {
     setIsLoading(true);
     try {
       // Simulate processing delay
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Generate mock violations based on filename
-      const mockViolations = generateMockViolations(file.name);
+      // Generate mock violations based on file upload
+      const mockViolations = generateMockViolations();
       setViolations(mockViolations);
     } catch (error) {
       console.error("Error processing file:", error);

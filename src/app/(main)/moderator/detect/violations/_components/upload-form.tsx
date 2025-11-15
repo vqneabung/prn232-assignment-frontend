@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface UploadFormProps {
-  onUpload: (file: File) => void;
+  onUpload: () => Promise<void>;
   isLoading?: boolean;
 }
 
@@ -54,7 +54,7 @@ export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
       const files = e.dataTransfer.files;
       if (files && files[0]) {
         if (validateFile(files[0])) {
-          onUpload(files[0]);
+          onUpload();
         }
       }
     },
@@ -66,7 +66,7 @@ export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
       const files = e.target.files;
       if (files && files[0]) {
         if (validateFile(files[0])) {
-          onUpload(files[0]);
+          onUpload();
         }
       }
     },

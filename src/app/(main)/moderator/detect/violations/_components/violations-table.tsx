@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import { ViolationRecord, VIOLATION_LABELS, VIOLATION_SEVERITY_COLOR } from "../types";
+import { ViolationRecord, VIOLATION_SEVERITY_COLOR, getSeverityLabel } from "../types";
 
 interface ViolationsTableProps {
   data: ViolationRecord[];
@@ -27,11 +27,15 @@ function ViolationRow({ record }: { record: ViolationRecord }) {
             <TableCell>
               <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </TableCell>
-            <TableCell className="font-medium">{record.studentName}</TableCell>
-            <TableCell>{record.studentId}</TableCell>
-            <TableCell>{record.classCode}</TableCell>
+            <TableCell className="font-medium">{record.filePath}</TableCell>
+            <TableCell className="font-medium">{record.rule.name}</TableCell>
+            <TableCell>
+              <Badge className={VIOLATION_SEVERITY_COLOR[record.rule.severity]}>
+                {getSeverityLabel(record.rule.severity)}
+              </Badge>
+            </TableCell>
             <TableCell className="text-center">
-              <Badge variant="secondary">{record.violations.length}</Badge>
+              <Badge variant="secondary">{record.rule.violations.length}</Badge>
             </TableCell>
           </TableRow>
         </CollapsibleTrigger>
@@ -39,20 +43,22 @@ function ViolationRow({ record }: { record: ViolationRecord }) {
           <TableRow>
             <TableCell colSpan={5} className="bg-muted/30 p-0">
               <div className="space-y-2 p-4">
-                {record.violations.map((violation) => (
-                  <div
-                    key={`${violation.type}-${violation.severity}`}
-                    className="bg-card space-y-1 rounded-lg border p-3"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <Badge variant="outline" className={VIOLATION_SEVERITY_COLOR[violation.severity]}>
-                        {VIOLATION_LABELS[violation.type]}
-                      </Badge>
-                      <span className="text-muted-foreground text-xs font-medium">Mức độ: {violation.severity}</span>
-                    </div>
-                    <p className="text-muted-foreground text-sm">{violation.message}</p>
+                <div className="bg-card space-y-2 rounded-lg border p-3">
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm">Rule ID: {record.rule.ruleId}</p>
+                    <p className="text-muted-foreground text-sm">{record.rule.description}</p>
+                    <p className="text-muted-foreground text-xs">Pattern: <code className="bg-muted px-2 py-1 rounded">{record.rule.pattern}</code></p>
                   </div>
-                ))}
+                  <div className="space-y-2 mt-3">
+                    <p className="font-semibold text-sm">Violations in file:</p>
+                    {record.rule.violations.map((violation) => (
+                      <div key={violation.violationId} className="bg-muted p-2 rounded text-sm">
+                        <p className="text-muted-foreground">{violation.message}</p>
+                        <p className="text-xs text-muted-foreground mt-1">File: {violation.filePath}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </TableCell>
           </TableRow>
@@ -94,7 +100,7 @@ export function ViolationsTable({ data, isLoading = false }: ViolationsTableProp
     <Card>
       <CardHeader>
         <CardTitle>Kết quả phát hiện</CardTitle>
-        <CardDescription>Tìm thấy {data.length} bộ hồ sơ với vi phạm</CardDescription>
+        <CardDescription>Tìm thấy {data.length} file với vi phạm</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -102,15 +108,15 @@ export function ViolationsTable({ data, isLoading = false }: ViolationsTableProp
             <TableHeader>
               <TableRow>
                 <TableHead className="w-12"></TableHead>
-                <TableHead>Tên sinh viên</TableHead>
-                <TableHead>Mã sinh viên</TableHead>
-                <TableHead>Mã lớp</TableHead>
-                <TableHead className="text-center">Số vi phạm</TableHead>
+                <TableHead>File Path</TableHead>
+                <TableHead>Rule Name</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead className="text-center">Violations</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((record) => (
-                <ViolationRow key={record.id} record={record} />
+                <ViolationRow key={`${record.rule.ruleId}-${record.filePath}`} record={record} />
               ))}
             </TableBody>
           </Table>

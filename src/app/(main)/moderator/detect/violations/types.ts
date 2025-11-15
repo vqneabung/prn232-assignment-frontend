@@ -1,34 +1,70 @@
-export interface ViolationRecord {
-  id: string;
-  studentName: string;
-  studentId: string;
-  classCode: string;
-  violations: ViolationDetail[];
-}
-
-export type ViolationType =
-  | "incorrect_filename"
-  | "invalid_naming_convention"
-  | "source_code_duplicate"
-  | "suspicious_code_pattern"
-  | "missing_documentation";
-
-export interface ViolationDetail {
-  type: ViolationType;
+/**
+ * Single violation detected in a file
+ */
+export interface Violation {
+  violationId: number;
+  submissionId: number;
+  ruleId: number;
+  filePath: string;
   message: string;
-  severity: "low" | "medium" | "high";
 }
 
-export const VIOLATION_LABELS: Record<ViolationType, string> = {
-  incorrect_filename: "Tên file không chính xác",
-  invalid_naming_convention: "Vi phạm quy ước đặt tên",
-  source_code_duplicate: "Mã sao chép",
-  suspicious_code_pattern: "Mẫu mã bất thường",
-  missing_documentation: "Thiếu tài liệu",
-};
+/**
+ * Rule definition for detecting violations
+ */
+export interface DetectionRule {
+  ruleId: number;
+  name: string;
+  pattern: string;
+  severity: "low" | "medium" | "high" | "critical";
+  description: string;
+  violations: Violation[];
+}
 
-export const VIOLATION_SEVERITY_COLOR: Record<"low" | "medium" | "high", string> = {
+/**
+ * File with violations - grouped by file
+ */
+export interface ViolationRecord {
+  filePath: string;
+  message: string;
+  rule: DetectionRule;
+}
+
+/**
+ * API Response structure for detect violations
+ */
+export interface DetectViolationsResponse {
+  message: string;
+  zipFileName: string;
+  uploadedAt: string;
+  checkedAt: string;
+  violations: ViolationRecord[];
+}
+
+/**
+ * Severity colors for violations
+ */
+export const VIOLATION_SEVERITY_COLOR: Record<"low" | "medium" | "high" | "critical", string> = {
   low: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
   medium: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
   high: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+  critical: "bg-red-600 text-white dark:bg-red-700 dark:text-red-100",
 };
+
+/**
+ * Get severity label
+ */
+export function getSeverityLabel(severity: "low" | "medium" | "high" | "critical"): string {
+  switch (severity) {
+    case "low":
+      return "Thấp";
+    case "medium":
+      return "Trung bình";
+    case "high":
+      return "Cao";
+    case "critical":
+      return "Nghiêm trọng";
+    default:
+      return "Unknown";
+  }
+}
