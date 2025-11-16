@@ -2,8 +2,7 @@ import { ReactNode } from "react";
 
 import { cookies } from "next/headers";
 
-import { AppShell } from "@/app/(main)/shared/app-shell";
-import { users } from "@/data/users";
+import { ModeratorLayoutClient } from "./_components/moderator-layout-client";
 import { getPreference } from "@/server/server-actions";
 import {
   SIDEBAR_VARIANT_VALUES,
@@ -15,8 +14,6 @@ import {
   type ContentLayout,
   type NavbarStyle,
 } from "@/types/preferences/layout";
-
-import { ModeratorAppSidebar } from "./_components/sidebar/app-sidebar";
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
@@ -37,13 +34,13 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
   };
 
   return (
-    <AppShell
+    <ModeratorLayoutClient
       defaultOpen={defaultOpen}
-      sidebarComponent={<ModeratorAppSidebar variant={sidebarVariant} collapsible={sidebarCollapsible} />}
+      sidebarVariant={sidebarVariant}
+      sidebarCollapsible={sidebarCollapsible}
       layoutPreferences={layoutPreferences}
-      users={users}
     >
       {children}
-    </AppShell>
+    </ModeratorLayoutClient>
   );
 }

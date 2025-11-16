@@ -6,22 +6,38 @@ import { UploadForm } from "./_components/upload-form";
 import { ViolationsTable } from "./_components/violations-table";
 import { ViolationRecord } from "./types";
 import { generateMockViolations } from "./utils";
+import { checkPlagiarism } from "../../handlers";
+import { toast } from "sonner";
 
 export default function DetectViolationsPage() {
   const [violations, setViolations] = useState<ViolationRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleUpload = async () => {
+  const handleUpload = async (file: File, submissionId: string, threshold?: number) => {
     setIsLoading(true);
     try {
-      // Simulate processing delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Generate mock violations based on file upload
-      const mockViolations = generateMockViolations();
-      setViolations(mockViolations);
+      // Call plagiarism check API
+      const result = await checkPlagiarism(file, submissionId, threshold);
+      
+      if (result && result.isPlagiarized) {
+        // Show plagiarism detection result
+        toast.success(`Plagiarism detected: ${result.similarityScore}% similarity`);
+        // For now, use mock data to display in table
+        // In production, transform matched files to violations format
+        const mockViolations = generateMockViolations();
+        setViolations(mockViolations);
+      } else if (result) {
+        toast.success("No plagiarism detected");
+        setViolations([]);
+      } else {
+        // Fallback to mock if API fails
+        const mockViolations = generateMockViolations();
+        setViolations(mockViolations);
+        toast.info("Using mock data (API unavailable)");
+      }
     } catch (error) {
       console.error("Error processing file:", error);
+      toast.error("Failed to check plagiarism");
       setViolations([]);
     } finally {
       setIsLoading(false);

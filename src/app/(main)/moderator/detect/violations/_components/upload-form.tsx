@@ -6,15 +6,20 @@ import { Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface UploadFormProps {
-  onUpload: () => Promise<void>;
+  onUpload: (file: File, submissionId: string, threshold?: number) => Promise<void>;
   isLoading?: boolean;
 }
 
 export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submissionId, setSubmissionId] = useState<string>("");
+  const [threshold, setThreshold] = useState<number>(50);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const validateFile = (file: File): boolean => {
     const validExtensions = [".zip", ".rar"];
@@ -54,24 +59,36 @@ export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
       const files = e.dataTransfer.files;
       if (files && files[0]) {
         if (validateFile(files[0])) {
-          onUpload();
+          setSelectedFile(files[0]);
         }
       }
     },
-    [onUpload],
+    [],
   );
 
-  const handleFileSelect = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = e.target.files;
-      if (files && files[0]) {
-        if (validateFile(files[0])) {
-          onUpload();
-        }
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files?.[0]) {
+      if (validateFile(files[0])) {
+        setSelectedFile(files[0]);
       }
-    },
-    [onUpload],
-  );
+    }
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      setError("Vui lòng chọn file");
+      return;
+    }
+    if (!submissionId.trim()) {
+      setError("Vui lòng nhập Submission ID");
+      return;
+    }
+
+    await onUpload(selectedFile, submissionId, threshold);
+    setSelectedFile(null);
+    setSubmissionId("");
+  };
 
   return (
     <Card>
@@ -94,6 +111,7 @@ export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
             <div>
               <p className="font-medium">Kéo file vào đây hoặc nhấp để chọn</p>
               <p className="text-muted-foreground text-sm">Hỗ trợ: ZIP, RAR (tối đa 100MB)</p>
+              {selectedFile && <p className="text-primary text-sm mt-2">✓ {selectedFile.name}</p>}
             </div>
           </div>
           <input
@@ -105,10 +123,35 @@ export function UploadForm({ onUpload, isLoading = false }: UploadFormProps) {
           />
         </div>
 
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="submission-id">Submission ID</Label>
+            <Input
+              id="submission-id"
+              placeholder="Nhập submission ID"
+              value={submissionId}
+              onChange={(e) => setSubmissionId(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="threshold">Threshold (%)</Label>
+            <Input
+              id="threshold"
+              type="number"
+              min="0"
+              max="100"
+              value={threshold}
+              onChange={(e) => setThreshold(Math.max(0, Math.min(100, parseInt(e.target.value) || 50)))}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
+
         {error && <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>}
 
-        <Button asChild variant="outline" className="w-full" disabled={isLoading}>
-          <label className="cursor-pointer">{isLoading ? "Đang xử lí..." : "Chọn file"}</label>
+        <Button onClick={handleSubmit} className="w-full" disabled={isLoading || !selectedFile}>
+          {isLoading ? "Đang xử lí..." : "Kiểm tra vi phạm"}
         </Button>
       </CardContent>
     </Card>

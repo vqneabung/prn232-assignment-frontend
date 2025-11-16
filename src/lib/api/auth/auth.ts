@@ -1,6 +1,7 @@
 import { commonApiGet, commonApiPost } from "../common/common-api";
 import { authStore } from "@/stores/auth/authStore";
 import type { BaseResponse, AuthResponse } from "@/types/type";
+import { commonPost } from "../common/common";
 
 const authBasePath = "/Auth";
 
@@ -13,10 +14,10 @@ const getBearerHeaders = () => {
 
 export const authApi = {
   login: async (userName: string, password: string): Promise<BaseResponse<AuthResponse>> => {
-    return commonApiPost<AuthResponse>(`${authBasePath}/login`, { userName, password });
+    return commonPost<AuthResponse>(`/api/auth/login`, { userName, password });
   },
   register: async (userName: string, password: string, roleId: number): Promise<BaseResponse<AuthResponse>> => {
-    return commonApiPost<AuthResponse>(`${authBasePath}/register`, { userName, password, roleId });
+    return commonPost<AuthResponse>(`/api/auth/register`, { userName, password, roleId });
   },
   me: async (): Promise<BaseResponse<AuthResponse>> => {
     return commonApiGet<AuthResponse>(`${authBasePath}/me`, getBearerHeaders());
