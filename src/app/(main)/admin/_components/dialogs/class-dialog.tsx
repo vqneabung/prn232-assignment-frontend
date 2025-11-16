@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { ClassResponse, ClassRequest } from "@/types/type";
 import { handleCreateClass, handleUpdateClass } from "../../handlers";
+import { lecturerApi, type LecturerResponse } from "@/lib/api/lecturer/lecturer";
 
 interface ClassDialogProps {
   open: boolean;
@@ -29,15 +31,36 @@ export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassD
     lecturer: 0,
     examiner: 0,
   });
+  const [lecturers, setLecturers] = useState<LecturerResponse[]>([]);
+  const [isLoadingLecturers, setIsLoadingLecturers] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Fetch lecturers on mount
+  useEffect(() => {
+    const fetchLecturers = async () => {
+      try {
+        setIsLoadingLecturers(true);
+        const response = await lecturerApi.getAll();
+        if (response.success && response.data) {
+          setLecturers(response.data);
+        }
+      } catch (error) {
+        console.error("Error loading lecturers:", error);
+      } finally {
+        setIsLoadingLecturers(false);
+      }
+    };
+
+    fetchLecturers();
+  }, []);
 
   useEffect(() => {
     if (classData) {
       setFormData({
         className: classData.className,
         semester: classData.semester,
-        lecturer: classData.lecturer || 0,
-        examiner: classData.examiner || 0,
+        lecturer: classData.lecturer ?? 0,
+        examiner: classData.examiner ?? 0,
       });
     } else {
       setFormData({
@@ -102,27 +125,35 @@ export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassD
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="lecturer">Lecturer ID *</Label>
-                <Input
-                  id="lecturer"
-                  type="number"
-                  placeholder="e.g., 1"
-                  value={formData.lecturer || ""}
-                  onChange={(e) => setFormData({ ...formData, lecturer: parseInt(e.target.value) || 0 })}
-                  required
-                />
+                <Label htmlFor="lecturer">Lecturer *</Label>
+                <Select value={String(formData.lecturer)} onValueChange={(value) => setFormData({ ...formData, lecturer: parseInt(value) || 0 })}>
+                  <SelectTrigger id="lecturer" disabled={isLoadingLecturers}>
+                    <SelectValue placeholder="Select lecturer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {lecturers.map((lecturer) => (
+                      <SelectItem key={lecturer.userId} value={String(lecturer.userId)}>
+                        {lecturer.userName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="examiner">Examiner ID *</Label>
-                <Input
-                  id="examiner"
-                  type="number"
-                  placeholder="e.g., 2"
-                  value={formData.examiner || ""}
-                  onChange={(e) => setFormData({ ...formData, examiner: parseInt(e.target.value) || 0 })}
-                  required
-                />
+                <Label htmlFor="examiner">Examiner *</Label>
+                <Select value={String(formData.examiner)} onValueChange={(value) => setFormData({ ...formData, examiner: parseInt(value) || 0 })}>
+                  <SelectTrigger id="examiner" disabled={isLoadingLecturers}>
+                    <SelectValue placeholder="Select examiner" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {lecturers.map((lecturer) => (
+                      <SelectItem key={lecturer.userId} value={String(lecturer.userId)}>
+                        {lecturer.userName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
