@@ -40,13 +40,15 @@ export function LoginForm() {
       if (response.success && response.data) {
         toast.success("Login successful!");
 
+        const authData = response.data;
+
         // Update Zustand store from response
-        setUserName(response.data.userName);
-        setToken(response.data.token);
-        setRole(response.data.role);
+        setUserName(authData.userName);
+        setToken(authData.token);
+        setRole(authData.role);
 
         // Redirect based on role
-        redirectToRoleHome(response.data.role);
+        redirectToRoleHome(authData.role);
 
         // Refresh to apply middleware
         setTimeout(() => router.refresh(), 100);

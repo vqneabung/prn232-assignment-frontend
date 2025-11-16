@@ -1,17 +1,62 @@
 "use client";
 
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+import { subjectApi } from "@/lib/api/subject/subject";
 import { handleDeleteSubject } from "../../handlers";
-import { generateMockSubjects, getStatusColor, getStatusLabel } from "../../utils";
+import type { SubjectResponse } from "@/types/type";
+import { SubjectDialog } from "../../_components/dialogs/subject-dialog";
 
 export default function AdminSubjectsPage() {
-  const subjects = generateMockSubjects();
+  const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState<SubjectResponse | null>(null);
+
+  const fetchSubjects = async () => {
+    try {
+      setIsLoading(true);
+      const response = await subjectApi.getAll();
+      if (response.success && response.data) {
+        setSubjects(response.data);
+      } else {
+        setSubjects([]);
+      }
+    } catch (err) {
+      console.error("Error loading subjects:", err);
+      setSubjects([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
+
+  const handleOpenCreateDialog = () => {
+    setSelectedSubject(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleOpenEditDialog = (subject: SubjectResponse) => {
+    setSelectedSubject(subject);
+    setIsDialogOpen(true);
+  };
+
+  const handleDelete = async (subjectId: string | number) => {
+    await handleDeleteSubject(String(subjectId));
+    // Refresh the list
+    setSubjects(subjects.filter((s) => s.id !== subjectId));
+  };
+
+  const totalCredits = subjects.reduce((sum, s) => sum + s.credits, 0);
+  const activeCount = subjects.filter((s) => s.status === "active").length;
 
   return (
     <div className="space-y-6">
@@ -21,7 +66,7 @@ export default function AdminSubjectsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Manage Subjects</h1>
           <p className="text-muted-foreground">Create and manage course subjects</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={handleOpenCreateDialog}>
           <Plus className="h-4 w-4" />
           New Subject
         </Button>
@@ -44,7 +89,7 @@ export default function AdminSubjectsPage() {
             <CardTitle className="text-sm font-medium">Active</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{subjects.filter((s) => s.status === "active").length}</div>
+            <div className="text-2xl font-bold">{activeCount}</div>
             <p className="text-muted-foreground text-xs">Available for enrollment</p>
           </CardContent>
         </Card>
@@ -54,7 +99,7 @@ export default function AdminSubjectsPage() {
             <CardTitle className="text-sm font-medium">Total Credits</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{subjects.reduce((sum, s) => sum + s.credits, 0)}</div>
+            <div className="text-2xl font-bold">{totalCredits}</div>
             <p className="text-muted-foreground text-xs">Across all subjects</p>
           </CardContent>
         </Card>
@@ -81,42 +126,63 @@ export default function AdminSubjectsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {subjects.map((subject) => (
-                  <TableRow key={subject.id}>
-                    <TableCell className="font-mono text-sm font-semibold">{subject.code}</TableCell>
-                    <TableCell className="font-medium">{subject.name}</TableCell>
-                    <TableCell>{subject.credits}</TableCell>
-                    <TableCell className="text-muted-foreground max-w-xs truncate text-sm">
-                      {subject.description}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(subject.status)}>{getStatusLabel(subject.status)}</Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {new Date(subject.createdAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600 hover:text-red-700"
-                          onClick={() => handleDeleteSubject(subject.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                      Loading subjects...
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : subjects.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                      No subjects found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  subjects.map((subject) => (
+                    <TableRow key={subject.subjectId}>
+                      <TableCell className="font-mono text-sm font-semibold">{subject.code}</TableCell>
+                      <TableCell className="font-medium">{subject.name}</TableCell>
+                      <TableCell>{subject.credits}</TableCell>
+                      <TableCell className="text-muted-foreground max-w-xs truncate text-sm">
+                        {subject.description ?? "-"}
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-muted-foreground text-sm">Active</span>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {new Date().toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" size="sm" onClick={() => handleOpenEditDialog(subject)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => handleDelete(subject.subjectId)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
         </CardContent>
       </Card>
+
+      <SubjectDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        subject={selectedSubject}
+        onSuccess={fetchSubjects}
+      />
     </div>
   );
 }

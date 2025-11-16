@@ -4,13 +4,12 @@ export const headers: HeadersInit = {
   "Content-Type": "application/json",
 };
 
-
-export async function commonFetch(
+export async function commonFetch<T = unknown>(
   url: string,
   method: string,
-  body?: any,
+  body?: Record<string, unknown> | FormData,
   headersOverride?: HeadersInit,
-): Promise<BaseResponse> {
+): Promise<BaseResponse<T>> {
   // Don't set Content-Type header if body is FormData
   // Browser will automatically set it with proper boundary
   const finalHeaders = body instanceof FormData ? headersOverride : { ...headers, ...headersOverride };
@@ -26,8 +25,8 @@ export async function commonFetch(
       success: false,
       message: `HTTP error! status: ${response.status}`,
       errors: null,
-      data: await response.json(),
-    } as BaseResponse;
+      data: null,
+    } as BaseResponse<T>;
   }
 
   const data = await response.json();
@@ -37,21 +36,21 @@ export async function commonFetch(
     message: "Request successful",
     errors: null,
     data,
-  } as BaseResponse;
+  } as BaseResponse<T>;
 }
 
-export async function commonGet(url: string): Promise<BaseResponse> {
-  return commonFetch(url, "GET");
+export async function commonGet<T = unknown>(url: string): Promise<BaseResponse<T>> {
+  return commonFetch<T>(url, "GET");
 }
 
-export async function commonPost(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonFetch(url, "POST", body, headersOverride);
+export async function commonPost<T = unknown>(url: string, body?: Record<string, unknown> | FormData, headersOverride?: HeadersInit): Promise<BaseResponse<T>> {
+  return commonFetch<T>(url, "POST", body, headersOverride);
 }
 
-export async function commonPut(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonFetch(url, "PUT", body, headersOverride);
+export async function commonPut<T = unknown>(url: string, body?: Record<string, unknown> | FormData, headersOverride?: HeadersInit): Promise<BaseResponse<T>> {
+  return commonFetch<T>(url, "PUT", body, headersOverride);
 }
 
-export async function commonDelete(url: string): Promise<BaseResponse> {
-  return commonFetch(url, "DELETE");
+export async function commonDelete<T = unknown>(url: string): Promise<BaseResponse<T>> {
+  return commonFetch<T>(url, "DELETE");
 }

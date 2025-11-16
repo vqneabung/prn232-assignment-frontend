@@ -5,7 +5,6 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import { cn } from "@/lib/utils";
 import type { SidebarVariant, SidebarCollapsible, ContentLayout, NavbarStyle } from "@/types/preferences/layout";
 
-import { AccountSwitcher } from "./sidebar/account-switcher";
 import { LayoutControls } from "./sidebar/layout-controls";
 import { SearchDialog } from "./sidebar/search-dialog";
 import { ThemeSwitcher } from "./sidebar/theme-switcher";
@@ -19,17 +18,10 @@ interface AppShellProps {
     collapsible: SidebarCollapsible;
     navbarStyle: NavbarStyle;
   };
-  readonly users: ReadonlyArray<{
-    readonly id: string;
-    readonly name: string;
-    readonly email: string;
-    readonly avatar: string;
-    readonly role: string;
-  }>;
   readonly children: React.ReactNode;
 }
 
-export function AppShell({ defaultOpen, sidebarComponent, layoutPreferences, users, children }: AppShellProps) {
+export function AppShell({ defaultOpen, sidebarComponent, layoutPreferences, children }: AppShellProps) {
   const { contentLayout, variant, collapsible, navbarStyle } = layoutPreferences;
 
   return (
@@ -63,7 +55,6 @@ export function AppShell({ defaultOpen, sidebarComponent, layoutPreferences, use
                 navbarStyle={navbarStyle}
               />
               <ThemeSwitcher />
-              <AccountSwitcher users={users} />
             </div>
           </div>
         </header>

@@ -1,11 +1,12 @@
 "use client";
 
-import { Plus, Edit, Trash2, Clock } from "lucide-react";
+import { Plus, Edit, Trash2, Clock, AlertCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { handleDeleteExam } from "../../handlers";
 import { generateMockExams, getStatusColor, getStatusLabel } from "../../utils";
@@ -28,6 +29,15 @@ export default function AdminExamsPage() {
           New Exam
         </Button>
       </div>
+
+      {/* API Notice */}
+      <Alert>
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Backend API Pending</AlertTitle>
+        <AlertDescription>
+          Exam management is currently using mock data. Backend API endpoints are being developed and will be integrated soon.
+        </AlertDescription>
+      </Alert>
 
       {/* Statistics */}
       <div className="grid gap-4 md:grid-cols-4">

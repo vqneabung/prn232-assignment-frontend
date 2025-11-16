@@ -6,12 +6,12 @@ export const headers: HeadersInit = {
 
 export const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function commonApiFetch(
+export async function commonApiFetch<T = unknown>(
   url: string,
   method: string,
-  body?: any,
+  body?: Record<string, unknown> | FormData,
   headersOverride?: HeadersInit,
-): Promise<BaseResponse> {
+): Promise<BaseResponse<T>> {
   // Don't set Content-Type header if body is FormData
   // Browser will automatically set it with proper boundary
   const finalHeaders = body instanceof FormData ? headersOverride : { ...headers, ...headersOverride };
@@ -27,8 +27,8 @@ export async function commonApiFetch(
       success: false,
       message: `HTTP error! status: ${response.status}`,
       errors: null,
-      data: await response.json(),
-    } as BaseResponse;
+      data: null,
+    } as BaseResponse<T>;
   }
 
   const data = await response.json();
@@ -38,21 +38,29 @@ export async function commonApiFetch(
     message: "Request successful",
     errors: null,
     data,
-  } as BaseResponse;
+  } as BaseResponse<T>;
 }
 
-export async function commonApiGet(url: string): Promise<BaseResponse> {
-  return commonApiFetch(url, "GET");
+export async function commonApiGet<T = unknown>(url: string, headersOverride?: HeadersInit): Promise<BaseResponse<T>> {
+  return commonApiFetch<T>(url, "GET", undefined, headersOverride);
 }
 
-export async function commonApiPost(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonApiFetch(url, "POST", body, headersOverride);
+export async function commonApiPost<T = unknown>(
+  url: string,
+  body?: Record<string, unknown> | FormData,
+  headersOverride?: HeadersInit,
+): Promise<BaseResponse<T>> {
+  return commonApiFetch<T>(url, "POST", body, headersOverride);
 }
 
-export async function commonApiPut(url: string, body?: any, headersOverride?: HeadersInit): Promise<BaseResponse> {
-  return commonApiFetch(url, "PUT", body, headersOverride);
+export async function commonApiPut<T = unknown>(
+  url: string,
+  body?: Record<string, unknown> | FormData,
+  headersOverride?: HeadersInit,
+): Promise<BaseResponse<T>> {
+  return commonApiFetch<T>(url, "PUT", body, headersOverride);
 }
 
-export async function commonApiDelete(url: string): Promise<BaseResponse> {
-  return commonApiFetch(url, "DELETE");
+export async function commonApiDelete<T = unknown>(url: string, headersOverride?: HeadersInit): Promise<BaseResponse<T>> {
+  return commonApiFetch<T>(url, "DELETE", undefined, headersOverride);
 }

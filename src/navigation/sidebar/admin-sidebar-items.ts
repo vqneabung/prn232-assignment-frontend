@@ -6,6 +6,8 @@ import {
   ClipboardList,
   CheckCircle2,
   Download,
+  Users,
+  GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -54,6 +56,16 @@ export const AdminSidebarItems: NavGroup[] = [
         title: "Subjects",
         url: "/admin/system/subjects",
         icon: BookOpen,
+      },
+      {
+        title: "Classes",
+        url: "/admin/system/classes",
+        icon: Users,
+      },
+      {
+        title: "Students",
+        url: "/admin/system/students",
+        icon: GraduationCap,
       },
       {
         title: "Semesters",
