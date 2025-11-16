@@ -15,13 +15,20 @@ export async function POST(req: Request) {
   }
 
   if (authResponse.data && authResponse.data.token) {
-    const response = NextResponse.next();
+    // Create response with success data
+    const response = NextResponse.json({
+      success: true,
+      token: authResponse.data.token,
+      userName: authResponse.data.userName,
+      role: authResponse.data.role,
+    });
 
     // Set token in HttpOnly cookie
     response.cookies.set("token", authResponse.data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
     });
 
     // Set userName and role in regular cookies
@@ -31,6 +38,7 @@ export async function POST(req: Request) {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
 
@@ -40,11 +48,12 @@ export async function POST(req: Request) {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
 
-    // Return token in response
-    return NextResponse.json({ success: true, token: authResponse.data.token });
+    // Return response with cookies
+    return response;
   } else {
     return new NextResponse(JSON.stringify({}), { status: 401 });
   }

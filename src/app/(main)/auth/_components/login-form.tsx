@@ -15,49 +15,67 @@ import { authApi } from "@/lib/api/auth/auth";
 import { authStore } from "@/stores/auth/authStore";
 
 const FormSchema = z.object({
-  email: z.string(),
+  userName: z.string(),
   password: z.string().min(6, { message: "Password must be at least 6 characters." }),
   remember: z.boolean().optional(),
 });
 
 export function LoginForm() {
   const router = useRouter();
-  const { setEmail } = authStore();
+  // const { setEmail } = authStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      userName: "",
       password: "",
       remember: false,
     },
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const response = await authApi.login(data.email, data.password);
+    const response = await authApi.login(data.userName, data.password);
     if (response.success) {
-      setEmail(data.email);
       toast.success("Login successful!");
       // Await 500 milliseconds to show the toast before redirecting
       Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));
       // Handle successful login (e.g., redirect, update state)
-      router.push("/user");
+      console.log("Logged in user:", response.data);
+      redirectToRoleHome(response.data.role);
     } else {
       toast.error(`Login failed: ${response.message || "Unknown error"}`);
     }
   };
+
+  const protectedRoutes = {
+    admin: ["/admin"],
+    manager: ["/manager"],
+    moderator: ["/moderator"],
+    examinator: ["/examinator"],
+  };
+
+  const redirectToRoleHome = (role: string) => {
+    const routes = protectedRoutes[role.toLowerCase() as keyof typeof protectedRoutes];
+    if (routes && routes.length > 0) {
+      router.push(routes[0]);
+    } else {
+      router.push("/");
+    }
+  };
+
+
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="email"
+          name="userName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input id="email" type="text" placeholder="you@example.com" autoComplete="email" {...field} />
+                <Input id="userName" type="text" placeholder="you@example.com" autoComplete="userName" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
