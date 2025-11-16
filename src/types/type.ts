@@ -6,6 +6,10 @@ export interface BaseResponse {
 }
 
 export type Auth = {
-  email: string;
-  setEmail: (email: string) => void;
+  userName: string;
+  token?: string;
+  role?: string;
+  setUserName: (userName: string) => void;
+  setToken: (token: string) => void;
+  setRole: (role: string) => void;
 };

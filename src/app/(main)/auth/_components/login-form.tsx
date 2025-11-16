@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-  // const { setEmail } = authStore();
+  const { setUserName, setRole, setToken } = authStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -41,6 +41,9 @@ export function LoginForm() {
       Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));
       // Handle successful login (e.g., redirect, update state)
       console.log("Logged in user:", response.data);
+      setUserName(response.data.userName);
+      setToken(response.data.token);
+      setRole(response.data.role);
       redirectToRoleHome(response.data.role);
     } else {
       toast.error(`Login failed: ${response.message || "Unknown error"}`);
