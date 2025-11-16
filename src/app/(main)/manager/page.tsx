@@ -1,9 +1,55 @@
-import { Plus } from "lucide-react";
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import { Plus, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchAllClasses, fetchAllSubmissions } from "./handlers";
+import type { ClassResponse, SubmissionResponse } from "@/types/type";
 
 export default function ManagerDashboard() {
+  const [classes, setClasses] = useState<ClassResponse[]>([]);
+  const [submissions, setSubmissions] = useState<SubmissionResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const [classesData, submissionsData] = await Promise.all([
+        fetchAllClasses(),
+        fetchAllSubmissions(),
+      ]);
+      setClasses(classesData);
+      setSubmissions(submissionsData);
+    } catch (error) {
+      console.error("Error loading manager data:", error);
+      toast.error("Failed to load manager dashboard data");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // Calculate statistics
+  const totalSubmissions = submissions.length;
+  const pendingSubmissions = submissions.filter((s) => s.status === "pending").length;
+  const submittedSubmissions = submissions.filter((s) => s.status === "submitted").length;
+  const gradedSubmissions = submissions.filter((s) => s.status === "graded").length;
+  const completionPercentage = totalSubmissions > 0 ? Math.round((gradedSubmissions / totalSubmissions) * 100) : 0;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -16,41 +62,41 @@ export default function ManagerDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Submissions</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">456</div>
-            <p className="text-muted-foreground text-xs">245 graded (54%)</p>
+            <div className="text-2xl font-bold">{totalSubmissions}</div>
+            <p className="text-muted-foreground text-xs">{gradedSubmissions} graded ({completionPercentage}%)</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Examiners Active</CardTitle>
+            <CardTitle className="text-sm font-medium">Classes</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">18</div>
-            <p className="text-muted-foreground text-xs">All assigned</p>
+            <div className="text-2xl font-bold">{classes.length}</div>
+            <p className="text-muted-foreground text-xs">under management</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Violations Reported</CardTitle>
+            <CardTitle className="text-sm font-medium text-yellow-600">Pending</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">7</div>
-            <p className="text-muted-foreground text-xs">3 under review</p>
+            <div className="text-2xl font-bold text-yellow-600">{pendingSubmissions}</div>
+            <p className="text-muted-foreground text-xs">awaiting review</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Avg Completion</CardTitle>
+            <CardTitle className="text-sm font-medium text-green-600">Graded</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">62%</div>
-            <p className="text-muted-foreground text-xs">3.5 days average</p>
+            <div className="text-2xl font-bold text-green-600">{gradedSubmissions}</div>
+            <p className="text-muted-foreground text-xs">completed</p>
           </CardContent>
         </Card>
       </div>
@@ -69,44 +115,60 @@ export default function ManagerDashboard() {
             </Button>
             <Button variant="outline" className="w-full justify-start">
               <Plus className="mr-2 h-4 w-4" />
-              Report Violation
+              Track Progress
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Grading Progress */}
+      {/* Submission Status Summary */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Grading Progress by Subject</CardTitle>
+            <CardTitle>Submission Status</CardTitle>
+            <CardDescription>Breakdown by status</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
               <div className="mb-1 flex justify-between text-sm">
-                <span>Mathematics</span>
-                <span>75%</span>
+                <span>Pending</span>
+                <span className="font-semibold">{pendingSubmissions}</span>
               </div>
               <div className="h-2 w-full rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-blue-500" style={{ width: "75%" }}></div>
+                <div
+                  className="h-2 rounded-full bg-yellow-500"
+                  style={{
+                    width: totalSubmissions > 0 ? `${(pendingSubmissions / totalSubmissions) * 100}%` : "0%",
+                  }}
+                ></div>
               </div>
             </div>
             <div>
               <div className="mb-1 flex justify-between text-sm">
-                <span>Physics</span>
-                <span>62%</span>
+                <span>Submitted</span>
+                <span className="font-semibold">{submittedSubmissions}</span>
               </div>
               <div className="h-2 w-full rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-blue-500" style={{ width: "62%" }}></div>
+                <div
+                  className="h-2 rounded-full bg-blue-500"
+                  style={{
+                    width: totalSubmissions > 0 ? `${(submittedSubmissions / totalSubmissions) * 100}%` : "0%",
+                  }}
+                ></div>
               </div>
             </div>
             <div>
               <div className="mb-1 flex justify-between text-sm">
-                <span>Chemistry</span>
-                <span>48%</span>
+                <span>Graded</span>
+                <span className="font-semibold">{gradedSubmissions}</span>
               </div>
               <div className="h-2 w-full rounded-full bg-gray-200">
-                <div className="h-2 rounded-full bg-blue-500" style={{ width: "48%" }}></div>
+                <div
+                  className="h-2 rounded-full bg-green-500"
+                  style={{
+                    width: totalSubmissions > 0 ? `${(gradedSubmissions / totalSubmissions) * 100}%` : "0%",
+                  }}
+                ></div>
               </div>
             </div>
           </CardContent>
@@ -114,22 +176,23 @@ export default function ManagerDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Top Examiners</CardTitle>
-            <CardDescription>By submissions graded</CardDescription>
+            <CardTitle>Managed Classes</CardTitle>
+            <CardDescription>Total: {classes.length}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span>Dr. Nguyen Van A</span>
-              <span className="font-semibold">52</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Prof. Tran Thi B</span>
-              <span className="font-semibold">48</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Dr. Le Van C</span>
-              <span className="font-semibold">45</span>
-            </div>
+          <CardContent className="space-y-2 max-h-48 overflow-y-auto">
+            {classes.length > 0 ? (
+              classes.slice(0, 5).map((cls) => (
+                <div key={cls.classId} className="flex justify-between text-sm">
+                  <span>{cls.className}</span>
+                  <span className="text-muted-foreground">{cls.semester}</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-muted-foreground text-sm">No classes to display</p>
+            )}
+            {classes.length > 5 && (
+              <p className="text-muted-foreground text-xs pt-2">+ {classes.length - 5} more classes</p>
+            )}
           </CardContent>
         </Card>
       </div>

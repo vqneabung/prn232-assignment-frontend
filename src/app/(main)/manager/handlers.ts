@@ -7,7 +7,40 @@ import { toast } from "sonner";
 import { ruleApi } from "@/lib/api/rule/rule";
 import { submissionApi } from "@/lib/api/submission/submission";
 import { plagiarismApi } from "@/lib/api/plagiarism/plagiarism";
-import type { RuleResponse, RuleRequest, SubmissionResponse, PlagiarismCheckResult } from "@/types/type";
+import { classApi } from "@/lib/api/class/class";
+import type { RuleResponse, RuleRequest, SubmissionResponse, PlagiarismCheckResult, ClassResponse } from "@/types/type";
+
+/**
+ * Fetch all classes for assignment management
+ */
+export const fetchAllClasses = async (): Promise<ClassResponse[]> => {
+  try {
+    const response = await classApi.getAll();
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching classes:", error);
+    return [];
+  }
+};
+
+/**
+ * Fetch submissions by class for examiner assignment
+ */
+export const fetchSubmissionsByClass = async (classId: number): Promise<SubmissionResponse[]> => {
+  try {
+    const response = await submissionApi.getByClass(classId);
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching submissions by class:", error);
+    return [];
+  }
+};
 
 /**
  * Fetch all rules for violation management
