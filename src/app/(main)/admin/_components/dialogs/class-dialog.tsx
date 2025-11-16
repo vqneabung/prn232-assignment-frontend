@@ -41,6 +41,7 @@ export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassD
       try {
         setIsLoadingLecturers(true);
         const response = await lecturerApi.getAll();
+        console.log("Lecturers response:", response);
         if (response.success && response.data) {
           setLecturers(response.data);
         }

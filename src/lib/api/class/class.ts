@@ -2,7 +2,7 @@ import { commonApiGet, commonApiPost, commonApiPut, commonApiDelete } from "../c
 import { authStore } from "@/stores/auth/authStore";
 import type { BaseResponse, ClassResponse, ClassRequest } from "@/types/type";
 
-const classBasePath = "/api/Class";
+const classBasePath = "/Class";
 
 const getBearerHeaders = () => {
   const token = authStore.getState().token;

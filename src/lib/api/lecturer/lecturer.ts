@@ -4,7 +4,7 @@ import { authStore } from "@/stores/auth/authStore";
 import type { BaseResponse } from "@/types/type";
 import { commonApiGet } from "@/lib/api/common/common-api";
 
-const lecturerBasePath = "/api/user/lecturers";
+const lecturerBasePath = "/users/lecturers";
 
 const getBearerHeaders = () => {
   const token = authStore.getState().token;
