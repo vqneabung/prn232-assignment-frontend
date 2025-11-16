@@ -51,19 +51,17 @@ export function LoginForm() {
     admin: ["/admin"],
     manager: ["/manager"],
     moderator: ["/moderator"],
-    examinator: ["/examinator"],
+    examiner: ["/examiner"],
   };
 
   const redirectToRoleHome = (role: string) => {
     const routes = protectedRoutes[role.toLowerCase() as keyof typeof protectedRoutes];
-    if (routes && routes.length > 0) {
+    if (routes.length > 0) {
       router.push(routes[0]);
     } else {
       router.push("/");
     }
   };
-
-
 
   return (
     <Form {...form}>

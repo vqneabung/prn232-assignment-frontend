@@ -8,7 +8,7 @@ export function proxy(request: NextRequest) {
     admin: ["/admin"],
     manager: ["/manager"],
     moderator: ["/moderator"],
-    examinator: ["/examinator"],
+    examiner: ["/examiner"],
   };
 
   // Kiểm tra nếu route hiện tại cần protection

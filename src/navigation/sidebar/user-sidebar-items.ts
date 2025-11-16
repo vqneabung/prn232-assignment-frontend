@@ -50,17 +50,17 @@ export const UserSidebarItems: NavGroup[] = [
     items: [
       {
         title: "Grade",
-        url: "/user/grade/list",
+        url: "/examiner/grade/list",
         icon: LayoutDashboard,
       },
       {
         title: "CRM",
-        url: "/user/crm",
+        url: "/examiner/crm",
         icon: ChartBar,
       },
       {
         title: "Finance",
-        url: "/user/finance",
+        url: "/examiner/finance",
         icon: Banknote,
       },
     ],
