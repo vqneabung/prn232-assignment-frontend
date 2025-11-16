@@ -3,8 +3,40 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { authStore } from "@/stores/auth/authStore";
+import { useRouter } from "next/navigation";
 
 export function Header() {
+  const router = useRouter();
+  const authData = authStore();
+
+  const isLoggedIn = !!authData.userName;
+
+  const handleLoginClick = () => {
+    console.log("Auth Data:", authData);
+    if (!isLoggedIn) {
+      router.push("/auth/login");
+    } else {
+      redirectToRoleHome(authData.role || "");
+    }
+  };
+
+  const protectedRoutes = {
+    admin: ["/admin"],
+    manager: ["/manager"],
+    moderator: ["/moderator"],
+    examiner: ["/examiner"],
+  };
+
+  const redirectToRoleHome = (role: string) => {
+    const routes = protectedRoutes[role.toLowerCase() as keyof typeof protectedRoutes];
+    if (routes.length > 0) {
+      router.push(routes[0]);
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <header className="bg-background/95 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
@@ -36,11 +68,9 @@ export function Header() {
           </Link>
         </nav>
 
-        <Link href="/auth/login" className="shrink-0">
-          <Button variant="default" size="sm" className="text-xs sm:text-sm">
-            Login
-          </Button>
-        </Link>
+        <Button variant="default" size="sm" className="text-xs sm:text-sm" onClick={handleLoginClick}>
+          Login
+        </Button>
       </div>
     </header>
   );

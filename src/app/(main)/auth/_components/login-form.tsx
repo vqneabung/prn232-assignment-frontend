@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -34,19 +34,28 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const response = await authApi.login(data.userName, data.password);
-    if (response.success) {
-      toast.success("Login successful!");
-      // Await 500 milliseconds to show the toast before redirecting
-      Promise.resolve().then(() => setTimeout(() => router.refresh(), 500));
-      // Handle successful login (e.g., redirect, update state)
-      console.log("Logged in user:", response.data);
-      setUserName(response.data.userName);
-      setToken(response.data.token);
-      setRole(response.data.role);
-      redirectToRoleHome(response.data.role);
-    } else {
-      toast.error(`Login failed: ${response.message || "Unknown error"}`);
+    try {
+      const response = await authApi.login(data.userName, data.password);
+
+      if (response.success && response.data) {
+        toast.success("Login successful!");
+
+        // Update Zustand store from response
+        setUserName(response.data.userName);
+        setToken(response.data.token);
+        setRole(response.data.role);
+
+        // Redirect based on role
+        redirectToRoleHome(response.data.role);
+
+        // Refresh to apply middleware
+        setTimeout(() => router.refresh(), 100);
+      } else {
+        toast.error(`Login failed: ${response.message ?? "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred during login");
     }
   };
 

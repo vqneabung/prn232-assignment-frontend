@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
     });
 
     // Set userName and role in regular cookies
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
 
@@ -46,15 +48,7 @@ export async function POST(req: Request) {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-      });
-    }
-
-    if (authResponse.data.expiredAt){
-      console.log("Setting expiredAt cookie:", authResponse.data.expiredAt);
-      response.cookies.set("expiredAt", authResponse.data.expiredAt, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
 
