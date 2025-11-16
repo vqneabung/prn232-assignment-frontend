@@ -1,25 +1,29 @@
 "use client";
 
-import { Plus, Edit, Trash2, Users, UserPlus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Plus, Users } from "lucide-react";
+import { useCallback, useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { classApi } from "@/lib/api/class/class";
 import { handleDeleteClass } from "../../handlers";
 import type { ClassResponse } from "@/types/type";
 import { ClassDialog } from "../../_components/dialogs/class-dialog";
+import { AddStudentDialog } from "../../_components/dialogs/add-student-dialog";
+import { ClassStudentsDialog } from "../../_components/dialogs/class-students-dialog";
+import { ClassRow } from "./_components/class-row";
 
 export default function AdminClassesPage() {
   const [classes, setClasses] = useState<ClassResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddStudentOpen, setIsAddStudentOpen] = useState(false);
+  const [isStudentsViewOpen, setIsStudentsViewOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<ClassResponse | null>(null);
 
-  const fetchClasses = async () => {
+  const fetchClasses = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await classApi.getAll();
@@ -34,11 +38,11 @@ export default function AdminClassesPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchClasses();
-  }, []);
+  }, [fetchClasses]);
 
   const handleOpenCreateDialog = () => {
     setSelectedClass(null);
@@ -50,16 +54,22 @@ export default function AdminClassesPage() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (classId: string | number) => {
-    await handleDeleteClass(String(classId));
-    // Refresh the list
-    const response = await classApi.getAll();
-    if (response.success && response.data) {
-      setClasses(response.data);
-    }
+  const handleOpenAddStudent = (classData: ClassResponse) => {
+    setSelectedClass(classData);
+    setIsAddStudentOpen(true);
   };
 
-  const totalStudents = classes.reduce((sum, c) => sum + (c.studentCount || 0), 0);
+  const handleOpenStudentsView = (classData: ClassResponse) => {
+    setSelectedClass(classData);
+    setIsStudentsViewOpen(true);
+  };
+
+  const handleDelete = async (classId: string | number) => {
+    await handleDeleteClass(String(classId));
+    fetchClasses();
+  };
+
+  const totalStudents = classes.reduce((sum, c) => sum + (c.studentCount ?? 0), 0);
   const activeClasses = classes.filter((c) => c.status === "active").length;
 
   return (
@@ -144,51 +154,14 @@ export default function AdminClassesPage() {
                 </TableHeader>
                 <TableBody>
                   {classes.map((classItem) => (
-                    <TableRow key={classItem.classId}>
-                      <TableCell className="font-medium">{classItem.classId}</TableCell>
-                      <TableCell className="font-medium">{classItem.className}</TableCell>
-                      <TableCell>{classItem.subjectName || classItem.subjectId}</TableCell>
-                      <TableCell>{classItem.semester}</TableCell>
-                      <TableCell>{classItem.lecturerName || classItem.lecturerId}</TableCell>
-                      <TableCell>{classItem.examinerName || classItem.examinerId}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4 text-muted-foreground" />
-                          {classItem.studentCount || 0}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            classItem.status === "active"
-                              ? "default"
-                              : classItem.status === "completed"
-                                ? "secondary"
-                                : "outline"
-                          }
-                        >
-                          {classItem.status || "pending"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="icon" title="Add Students">
-                            <UserPlus className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" title="Edit Class" onClick={() => handleOpenEditDialog(classItem)}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            title="Delete Class"
-                            onClick={() => handleDelete(classItem.classId)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                    <ClassRow
+                      key={classItem.classId}
+                      classItem={classItem}
+                      onEdit={handleOpenEditDialog}
+                      onAddStudent={handleOpenAddStudent}
+                      onViewStudents={handleOpenStudentsView}
+                      onDelete={handleDelete}
+                    />
                   ))}
                 </TableBody>
               </Table>
@@ -203,6 +176,25 @@ export default function AdminClassesPage() {
         classData={selectedClass}
         onSuccess={fetchClasses}
       />
+
+      {selectedClass && (
+        <>
+          <AddStudentDialog
+            open={isAddStudentOpen}
+            onOpenChange={setIsAddStudentOpen}
+            classId={Number(selectedClass.classId)}
+            onSuccess={fetchClasses}
+          />
+
+          <ClassStudentsDialog
+            open={isStudentsViewOpen}
+            onOpenChange={setIsStudentsViewOpen}
+            classId={Number(selectedClass.classId)}
+            className={selectedClass.className}
+            onSuccess={fetchClasses}
+          />
+        </>
+      )}
     </div>
   );
 }

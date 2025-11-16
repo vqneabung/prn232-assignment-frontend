@@ -1,11 +1,5 @@
 import {
   LayoutDashboard,
-  Settings,
-  BookOpen,
-  Calendar,
-  ClipboardList,
-  CheckCircle2,
-  Download,
   Users,
   GraduationCap,
   type LucideIcon,
@@ -53,11 +47,6 @@ export const AdminSidebarItems: NavGroup[] = [
     label: "System Management",
     items: [
       {
-        title: "Subjects",
-        url: "/admin/system/subjects",
-        icon: BookOpen,
-      },
-      {
         title: "Classes",
         url: "/admin/system/classes",
         icon: Users,
@@ -66,32 +55,6 @@ export const AdminSidebarItems: NavGroup[] = [
         title: "Students",
         url: "/admin/system/students",
         icon: GraduationCap,
-      },
-      {
-        title: "Semesters",
-        url: "/admin/system/semesters",
-        icon: Calendar,
-      },
-      {
-        title: "Exams",
-        url: "/admin/system/exams",
-        icon: ClipboardList,
-      },
-    ],
-  },
-  {
-    id: 3,
-    label: "Operations",
-    items: [
-      {
-        title: "Results Approval",
-        url: "/admin/approval",
-        icon: CheckCircle2,
-      },
-      {
-        title: "Report Export",
-        url: "/admin/reports",
-        icon: Download,
       },
     ],
   },
