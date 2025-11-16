@@ -1,19 +1,18 @@
 "use client";
 
 import { useCallback, useState, useEffect } from "react";
-import { Upload } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Upload, Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { TableCell } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
   fetchExaminerClasses,
-  fetchAllSubmissions,
-  fetchSubmissionById,
+  fetchSubmissionsByClass,
+  fetchCurrentUser,
 } from "../../handlers";
 import { authStore } from "@/stores/auth/authStore";
 import { studentApi } from "@/lib/api/student/student";
@@ -22,7 +21,8 @@ import { SubmissionViolationsView } from "../_components/submission-violations-v
 import type { ClassResponse, SubmissionResponse, StudentResponse, SubmissionUploadResponse } from "@/types/type";
 
 export default function GradeListPage() {
-  const { userId } = authStore();
+  const router = useRouter();
+  const { userId: storedUserId, setUserId } = authStore();
   const [classes, setClasses] = useState<ClassResponse[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionResponse[]>([]);
   const [students, setStudents] = useState<StudentResponse[]>([]);
@@ -35,18 +35,31 @@ export default function GradeListPage() {
     try {
       setIsLoading(true);
 
-      // Fetch examiner's classes
-      if (userId) {
-        const classesData = await fetchExaminerClasses(userId);
-        setClasses(classesData);
-        if (classesData.length > 0 && !selectedClass) {
-          setSelectedClass(String(classesData[0].classId));
+      // Fetch current user to get userId
+      let examinerId = storedUserId;
+      if (!examinerId) {
+        const currentUser = await fetchCurrentUser();
+        if (currentUser && currentUser.userId) {
+          examinerId = currentUser.userId;
+          setUserId(currentUser.userId);
+        } else {
+          toast.error("Failed to get user information");
+          setIsLoading(false);
+          return;
         }
       }
 
-      // Fetch all submissions
-      const submissionsData = await fetchAllSubmissions();
-      setSubmissions(submissionsData);
+      // Fetch examiner's classes
+      const classesData = await fetchExaminerClasses(examinerId);
+      setClasses(classesData);
+      if (classesData.length > 0) {
+        const classToLoad = selectedClass ?? String(classesData[0].classId);
+        setSelectedClass(classToLoad);
+
+        // Fetch submissions for the selected class
+        const submissionsData = await fetchSubmissionsByClass(parseInt(classToLoad));
+        setSubmissions(submissionsData);
+      }
 
       // Fetch students
       const studentResponse = await studentApi.getAll();
@@ -59,26 +72,28 @@ export default function GradeListPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [userId, selectedClass]);
+  }, [storedUserId, selectedClass, setUserId]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Filter submissions by selected class
-  const filteredSubmissions = selectedClass
-    ? submissions.filter((sub) => {
-        const classId = parseInt(selectedClass);
-        // Fallback: show all submissions if classId not available in submission object
-        return (sub as any).classId === classId || true;
-      })
-    : submissions;
+  const handleClassChange = useCallback(async (classId: string) => {
+    setSelectedClass(classId);
+    try {
+      const submissionsData = await fetchSubmissionsByClass(parseInt(classId));
+      setSubmissions(submissionsData);
+    } catch (error) {
+      console.error("Error loading submissions:", error);
+      toast.error("Failed to load submissions");
+    }
+  }, []);
 
   // Statistics
   const totalCount = submissions.length;
   const classesCount = classes.length;
-  const pendingCount = filteredSubmissions.filter((s) => s.status === "pending").length;
-  const gradedCount = filteredSubmissions.filter((s) => s.status === "graded").length;
+  const pendingCount = submissions.filter((s) => s.status === "pending").length;
+  const gradedCount = submissions.filter((s) => s.status === "graded").length;
 
   return (
     <div className="space-y-6">
@@ -168,7 +183,7 @@ export default function GradeListPage() {
                 <Button
                   key={cls.classId}
                   variant={selectedClass === String(cls.classId) ? "default" : "outline"}
-                  onClick={() => setSelectedClass(String(cls.classId))}
+                  onClick={() => handleClassChange(String(cls.classId))}
                   className="cursor-pointer"
                 >
                   {cls.className} ({cls.semester})
@@ -183,9 +198,9 @@ export default function GradeListPage() {
       <Card>
         <CardHeader>
           <CardTitle>Submissions</CardTitle>
-          <CardDescription>
-            {selectedClass ? `${filteredSubmissions.length} submissions` : "Select a class to view submissions"}
-          </CardDescription>
+                  <CardDescription>
+          {selectedClass ? `${submissions.length} submissions` : "Select a class to view submissions"}
+        </CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -196,7 +211,7 @@ export default function GradeListPage() {
             <div className="py-8 text-center">
               <p className="text-muted-foreground">No classes assigned to you</p>
             </div>
-          ) : filteredSubmissions.length === 0 ? (
+          ) : submissions.length === 0 ? (
             <div className="py-8 text-center">
               <p className="text-muted-foreground">No submissions found for selected class</p>
             </div>
@@ -214,7 +229,7 @@ export default function GradeListPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredSubmissions.map((submission) => (
+                  {submissions.map((submission) => (
                     <TableRow key={submission.submissionId}>
                       <TableCell className="font-medium">{submission.submissionId}</TableCell>
                       <TableCell>{submission.studentId}</TableCell>
@@ -234,7 +249,11 @@ export default function GradeListPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Button variant="sm" size="sm">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => router.push(`/examiner/grade/detail?id=${submission.submissionId}`)}
+                        >
                           View
                         </Button>
                       </TableCell>

@@ -7,9 +7,11 @@ export interface BaseResponse<T = unknown> {
 
 export type Auth = {
   userName: string;
+  userId?: number;
   token?: string;
   role?: string;
   setUserName: (userName: string) => void;
+  setUserId: (userId: number) => void;
   setToken: (token: string) => void;
   setRole: (role: string) => void;
   logout: () => void;
@@ -209,13 +211,9 @@ export interface StoreSubmissionResult {
 
 // Submission Upload Response
 export interface ViolationDetail {
-  violationId: number;
-  submissionId: number;
-  ruleId: number;
   filePath: string;
   message: string;
-  rule?: RuleResponse | null;
-  submission?: SubmissionUploadResponse | null;
+  ruleId: number;
   [key: string]: unknown;
 }
 
@@ -229,9 +227,7 @@ export interface ViolationWithRule {
     severity?: string;
     description?: string;
     violations: ViolationDetail[];
-    [key: string]: unknown;
   };
-  [key: string]: unknown;
 }
 
 export interface SubmissionUploadResponse {
@@ -246,9 +242,23 @@ export interface SubmissionUploadResponse {
     studentCode: string;
     fullName: string;
     email: string;
-    [key: string]: unknown;
   };
   violationCount: number;
   violations: ViolationWithRule[];
-  [key: string]: unknown;
+}
+
+export interface SubmissionDetailResponse {
+  submissionId: number;
+  zipFileName: string;
+  uploadedAt: string;
+  checkedAt: string;
+  studentId: number;
+  studentInfo: {
+    studentId: number;
+    studentCode: string;
+    fullName: string;
+    email: string;
+  };
+  violationCount: number;
+  violations: ViolationDetail[];
 }

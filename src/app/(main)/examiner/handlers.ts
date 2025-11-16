@@ -6,12 +6,30 @@
 import { classApi } from "@/lib/api/class/class";
 import { submissionApi } from "@/lib/api/submission/submission";
 import { plagiarismApi } from "@/lib/api/plagiarism/plagiarism";
+import { authApi } from "@/lib/api/auth/auth";
 import type {
   ClassResponse,
   SubmissionResponse,
   PlagiarismCheckResult,
   SubmissionUploadResponse,
+  AuthResponse,
 } from "@/types/type";
+
+/**
+ * Fetch current user info
+ */
+export const fetchCurrentUser = async (): Promise<AuthResponse | null> => {
+  try {
+    const response = await authApi.me();
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    return null;
+  }
+};
 
 /**
  * Fetch classes assigned to examiner
@@ -58,6 +76,22 @@ export const fetchSubmissionById = async (submissionId: number): Promise<Submiss
   } catch (error) {
     console.error("Error fetching submission:", error);
     return null;
+  }
+};
+
+/**
+ * Fetch submissions by class
+ */
+export const fetchSubmissionsByClass = async (classId: number): Promise<SubmissionResponse[]> => {
+  try {
+    const response = await submissionApi.getByClass(classId);
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching submissions by class:", error);
+    return [];
   }
 };
 

@@ -1,9 +1,15 @@
 "use client";
 
-import { authStore } from "@/stores/auth/authStore";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const { email } = authStore();
+  const router = useRouter();
 
-  return <>Hello {email}</>;
+  useEffect(() => {
+    router.replace("/examiner/grade/list");
+  }, [router]);
+
+  return null;
 }
+

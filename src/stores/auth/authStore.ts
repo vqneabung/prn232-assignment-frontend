@@ -16,12 +16,14 @@ export const authStore = create<Auth>()(
   persist(
     (set) => ({
       userName: getCookie("userName"),
+      userId: undefined,
       token: getCookie("token"),
       role: getCookie("role"),
       setUserName: (userName: string) => set({ userName }),
+      setUserId: (userId: number) => set({ userId }),
       setToken: (token: string) => set({ token }),
       setRole: (role: string) => set({ role }),
-      logout: () => set({ userName: "", token: "", role: "" }),
+      logout: () => set({ userName: "", userId: undefined, token: "", role: "" }),
     }),
     {
       name: "auth-storage",

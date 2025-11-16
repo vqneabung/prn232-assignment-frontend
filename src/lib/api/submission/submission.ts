@@ -38,6 +38,10 @@ export const submissionApi = {
     return commonApiGet(`${submissionBasePath}/by-student/${studentId}`, getBearerHeaders());
   },
 
+  getByClass: async (classId: number): Promise<BaseResponse<SubmissionResponse[]>> => {
+    return commonApiGet(`${submissionBasePath}/by-class/${classId}`, getBearerHeaders());
+  },
+
   getStatistics: async (studentId: number): Promise<BaseResponse<SubmissionStatistics>> => {
     return commonApiGet(
       `${submissionBasePath}/statistics/student/${studentId}`,
