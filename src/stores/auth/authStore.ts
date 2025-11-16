@@ -21,6 +21,7 @@ export const authStore = create<Auth>()(
       setUserName: (userName: string) => set({ userName }),
       setToken: (token: string) => set({ token }),
       setRole: (role: string) => set({ role }),
+      logout: () => set({ userName: "", token: "", role: "" }),
     }),
     {
       name: "auth-storage",

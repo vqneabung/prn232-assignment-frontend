@@ -1,4 +1,3 @@
-import { register } from "module";
 import { commonPost } from "../common/common";
 
 export const authApi = {
@@ -8,6 +7,10 @@ export const authApi = {
   },
   register: async (userName: string, password: string, roleId: number) => {
     const response = await commonPost("/api/auth/register", { userName, password, roleId });
+    return response;
+  },
+  logout: async () => {
+    const response = await commonPost("/api/auth/logout");
     return response;
   },
 };

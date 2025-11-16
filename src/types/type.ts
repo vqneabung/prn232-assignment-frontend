@@ -12,4 +12,5 @@ export type Auth = {
   setUserName: (userName: string) => void;
   setToken: (token: string) => void;
   setRole: (role: string) => void;
+  logout: () => void;
 };
