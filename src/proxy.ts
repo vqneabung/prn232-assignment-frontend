@@ -29,12 +29,22 @@ export function proxy(request: NextRequest) {
   // Get token và role từ cookies
   const token = request.cookies.get("token")?.value;
   const role = request.cookies.get("role")?.value ?? "";
+  const expiredAt = request.cookies.get("expiredAt")?.value;
 
   console.log("Auth check:", { token, role });
 
   // Nếu không có token, redirect về login
   if (!token) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  if (expiredAt) {
+    const expiredDate = new Date(expiredAt);
+    const now = new Date();
+    if (now > expiredDate) {
+      console.log("Token expired at:", expiredAt);
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
   }
 
   // Kiểm tra role có phù hợp không
