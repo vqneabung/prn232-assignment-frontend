@@ -53,20 +53,21 @@ export interface ClassResponse {
   classId: number;
   className: string;
   semester: string;
-  lecturer?: number;
-  examiner?: number;
+  lecturer: number;
+  examiner: number;
   lecturerName?: string;
   examinerName?: string;
-  studentCount: number;
+  studentCount?: number;
   students?: StudentResponse[];
+  status?: string;
   [key: string]: unknown;
 }
 
 export interface ClassRequest {
   className: string;
   semester: string;
-  lecturer?: number;
-  examiner?: number;
+  lecturer: number;
+  examiner: number;
   [key: string]: unknown;
 }
 

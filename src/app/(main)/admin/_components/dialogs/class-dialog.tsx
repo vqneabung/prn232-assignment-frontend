@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { ClassResponse, ClassRequest } from "@/types/type";
 import { handleCreateClass, handleUpdateClass } from "../../handlers";
 
@@ -26,11 +25,9 @@ interface ClassDialogProps {
 export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassDialogProps) {
   const [formData, setFormData] = useState<ClassRequest>({
     className: "",
-    subjectId: 0,
     semester: "",
-    lecturerId: 0,
-    examinerId: 0,
-    status: "active",
+    lecturer: 0,
+    examiner: 0,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -38,20 +35,16 @@ export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassD
     if (classData) {
       setFormData({
         className: classData.className,
-        subjectId: classData.subjectId,
         semester: classData.semester,
-        lecturerId: classData.lecturerId,
-        examinerId: classData.examinerId,
-        status: classData.status || "active",
+        lecturer: classData.lecturer || 0,
+        examiner: classData.examiner || 0,
       });
     } else {
       setFormData({
         className: "",
-        subjectId: 0,
         semester: "",
-        lecturerId: 0,
-        examinerId: 0,
-        status: "active",
+        lecturer: 0,
+        examiner: 0,
       });
     }
   }, [classData, open]);
@@ -96,72 +89,41 @@ export function ClassDialog({ open, onOpenChange, classData, onSuccess }: ClassD
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="subjectId">Subject ID *</Label>
-                <Input
-                  id="subjectId"
-                  type="number"
-                  placeholder="e.g., 1"
-                  value={formData.subjectId || ""}
-                  onChange={(e) => setFormData({ ...formData, subjectId: parseInt(e.target.value) || 0 })}
-                  required
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="semester">Semester *</Label>
-                <Input
-                  id="semester"
-                  placeholder="e.g., Fall 2024"
-                  value={formData.semester}
-                  onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
-                  required
-                />
-              </div>
+            <div className="grid gap-2">
+              <Label htmlFor="semester">Semester *</Label>
+              <Input
+                id="semester"
+                placeholder="e.g., Fall 2024"
+                value={formData.semester}
+                onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
+                required
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="lecturerId">Lecturer ID *</Label>
+                <Label htmlFor="lecturer">Lecturer ID *</Label>
                 <Input
-                  id="lecturerId"
+                  id="lecturer"
                   type="number"
                   placeholder="e.g., 1"
-                  value={formData.lecturerId || ""}
-                  onChange={(e) => setFormData({ ...formData, lecturerId: parseInt(e.target.value) || 0 })}
+                  value={formData.lecturer || ""}
+                  onChange={(e) => setFormData({ ...formData, lecturer: parseInt(e.target.value) || 0 })}
                   required
                 />
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="examinerId">Examiner ID *</Label>
+                <Label htmlFor="examiner">Examiner ID *</Label>
                 <Input
-                  id="examinerId"
+                  id="examiner"
                   type="number"
                   placeholder="e.g., 2"
-                  value={formData.examinerId || ""}
-                  onChange={(e) => setFormData({ ...formData, examinerId: parseInt(e.target.value) || 0 })}
+                  value={formData.examiner || ""}
+                  onChange={(e) => setFormData({ ...formData, examiner: parseInt(e.target.value) || 0 })}
                   required
                 />
               </div>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => setFormData({ ...formData, status: value as any })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
