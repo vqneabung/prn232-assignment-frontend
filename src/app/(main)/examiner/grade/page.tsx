@@ -1,5 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 export default function Page() {
-  return <div>User Grade Page</div>;
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to grade list page
+    router.replace("/examiner/grade/list");
+  }, [router]);
+
+  return <div>Redirecting...</div>;
 }

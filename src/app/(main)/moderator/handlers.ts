@@ -1,9 +1,228 @@
-"use client";
+/**
+ * Moderator Handlers
+ * Handlers for moderator role to manage rules, plagiarism detection, and submission verification
+ */
 
 import { toast } from "sonner";
+import { ruleApi } from "@/lib/api/rule/rule";
+import { submissionApi } from "@/lib/api/submission/submission";
+import { plagiarismApi } from "@/lib/api/plagiarism/plagiarism";
+import type { RuleResponse, RuleRequest, SubmissionResponse, PlagiarismCheckResult } from "@/types/type";
 
 /**
- * Moderator Complaint Handlers
+ * Fetch all rules for managing plagiarism detection patterns
+ */
+export const fetchAllRules = async (): Promise<RuleResponse[]> => {
+  try {
+    const response = await ruleApi.getAll();
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching rules:", error);
+    return [];
+  }
+};
+
+/**
+ * Fetch rule by ID
+ */
+export const fetchRuleById = async (ruleId: number): Promise<RuleResponse | null> => {
+  try {
+    const response = await ruleApi.getById(ruleId);
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching rule:", error);
+    return null;
+  }
+};
+
+/**
+ * Create new rule
+ */
+export const createRule = async (ruleData: RuleRequest): Promise<RuleResponse | null> => {
+  try {
+    const response = await ruleApi.create(ruleData);
+    if (response.success && response.data) {
+      toast.success("Rule created successfully");
+      return response.data;
+    }
+    toast.error(response.message ?? "Failed to create rule");
+    return null;
+  } catch (error) {
+    console.error("Error creating rule:", error);
+    toast.error("Failed to create rule");
+    return null;
+  }
+};
+
+/**
+ * Update existing rule
+ */
+export const updateRule = async (ruleId: number, ruleData: RuleRequest): Promise<RuleResponse | null> => {
+  try {
+    const response = await ruleApi.update(ruleId, ruleData);
+    if (response.success && response.data) {
+      toast.success("Rule updated successfully");
+      return response.data;
+    }
+    toast.error(response.message ?? "Failed to update rule");
+    return null;
+  } catch (error) {
+    console.error("Error updating rule:", error);
+    toast.error("Failed to update rule");
+    return null;
+  }
+};
+
+/**
+ * Delete rule
+ */
+export const deleteRule = async (ruleId: number): Promise<boolean> => {
+  try {
+    const response = await ruleApi.delete(ruleId);
+    if (response.success) {
+      toast.success("Rule deleted successfully");
+      return true;
+    }
+    toast.error(response.message ?? "Failed to delete rule");
+    return false;
+  } catch (error) {
+    console.error("Error deleting rule:", error);
+    toast.error("Failed to delete rule");
+    return false;
+  }
+};
+
+/**
+ * Fetch all submissions for detection and verification
+ */
+export const fetchAllSubmissions = async (): Promise<SubmissionResponse[]> => {
+  try {
+    const response = await submissionApi.getAll();
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching submissions:", error);
+    return [];
+  }
+};
+
+/**
+ * Fetch submission by ID
+ */
+export const fetchSubmissionById = async (submissionId: number): Promise<SubmissionResponse | null> => {
+  try {
+    const response = await submissionApi.getById(submissionId);
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching submission:", error);
+    return null;
+  }
+};
+
+/**
+ * Check plagiarism for detection
+ */
+export const checkPlagiarism = async (
+  file: File,
+  submissionId: string,
+  threshold?: number,
+): Promise<PlagiarismCheckResult | null> => {
+  try {
+    const response = await plagiarismApi.check(file, submissionId, threshold);
+    if (response.success && response.data) {
+      toast.success("Plagiarism detection completed");
+      return response.data;
+    }
+    toast.error(response.message ?? "Failed to check plagiarism");
+    return null;
+  } catch (error) {
+    console.error("Error checking plagiarism:", error);
+    toast.error("Failed to check plagiarism");
+    return null;
+  }
+};
+
+/**
+ * Store submission for plagiarism verification
+ */
+export const storeSubmissionForVerification = async (file: File, submissionId: string): Promise<boolean> => {
+  try {
+    const response = await plagiarismApi.store(file, submissionId);
+    if (response.success) {
+      toast.success("Submission stored for verification");
+      return true;
+    }
+    toast.error(response.message ?? "Failed to store submission");
+    return false;
+  } catch (error) {
+    console.error("Error storing submission:", error);
+    toast.error("Failed to store submission");
+    return false;
+  }
+};
+
+/**
+ * Check plagiarism service health
+ */
+export const checkPlagiarismHealth = async (): Promise<boolean> => {
+  try {
+    const response = await plagiarismApi.health();
+    return response.success ? true : false;
+  } catch (error) {
+    console.error("Error checking plagiarism service health:", error);
+    return false;
+  }
+};
+
+/**
+ * Upload submission file
+ */
+export const uploadSubmission = async (
+  file: File,
+  studentId: number,
+  ruleIds?: string,
+): Promise<boolean> => {
+  try {
+    const response = await submissionApi.upload(file, studentId, ruleIds);
+    if (response.success) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error uploading submission:", error);
+    return false;
+  }
+};
+
+/**
+ * Delete submission
+ */
+export const deleteSubmission = async (submissionId: number): Promise<boolean> => {
+  try {
+    const response = await submissionApi.delete(submissionId);
+    if (response.success) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error deleting submission:", error);
+    return false;
+  }
+};
+
+/**
+ * Moderator Complaint Handlers (Mock handlers for reference)
  */
 
 export async function handleReviewComplaint(complaintId: string): Promise<void> {

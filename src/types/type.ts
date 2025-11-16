@@ -139,3 +139,116 @@ export interface ImportedClassInfo {
   studentsCount: number;
   [key: string]: unknown;
 }
+
+// Submission DTOs
+export interface SubmissionResponse {
+  submissionId: number;
+  studentId: number;
+  fileUrl?: string;
+  ruleIds?: string[];
+  uploadedAt?: string;
+  status?: string;
+  violationCount?: number;
+  [key: string]: unknown;
+}
+
+export interface SubmissionRequest {
+  file?: File;
+  ruleIds?: string;
+  studentId: number;
+  [key: string]: unknown;
+}
+
+export interface SubmissionStatistics {
+  totalSubmissions: number;
+  acceptedSubmissions: number;
+  rejectedSubmissions: number;
+  violations: number;
+  lastSubmissionDate?: string;
+  [key: string]: unknown;
+}
+
+// Plagiarism DTOs
+export interface PlagiarismCheckResult {
+  isPlagiarized: boolean;
+  similarityScore: number;
+  matchedSubmissionId?: string;
+  matchedFiles?: MatchedFileDetail[];
+  totalFilesChecked: number;
+  message?: string;
+  [key: string]: unknown;
+}
+
+export interface MatchedFileDetail {
+  currentFile: string;
+  matchedFile: string;
+  similarity: number;
+  matchedSubmissionId: string;
+  [key: string]: unknown;
+}
+
+export interface PlagiarismCheckRequest {
+  file?: File;
+  submissionId: string;
+  threshold?: number;
+  [key: string]: unknown;
+}
+
+export interface PlagiarismStoreRequest {
+  file?: File;
+  submissionId: string;
+  [key: string]: unknown;
+}
+
+export interface StoreSubmissionResult {
+  message: string;
+  submissionId: string;
+  filesStored: number;
+  [key: string]: unknown;
+}
+
+// Submission Upload Response
+export interface ViolationDetail {
+  violationId: number;
+  submissionId: number;
+  ruleId: number;
+  filePath: string;
+  message: string;
+  rule?: RuleResponse | null;
+  submission?: SubmissionUploadResponse | null;
+  [key: string]: unknown;
+}
+
+export interface ViolationWithRule {
+  filePath: string;
+  message: string;
+  rule: {
+    ruleId: number;
+    name: string;
+    pattern: string;
+    severity?: string;
+    description?: string;
+    violations: ViolationDetail[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
+export interface SubmissionUploadResponse {
+  message: string;
+  submissionId: number;
+  zipFileName: string;
+  uploadedAt: string;
+  checkedAt: string;
+  studentId: number;
+  studentInfo: {
+    studentId: number;
+    studentCode: string;
+    fullName: string;
+    email: string;
+    [key: string]: unknown;
+  };
+  violationCount: number;
+  violations: ViolationWithRule[];
+  [key: string]: unknown;
+}
