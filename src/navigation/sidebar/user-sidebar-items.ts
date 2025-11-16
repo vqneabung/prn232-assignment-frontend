@@ -11,10 +11,6 @@ import {
   Fingerprint,
   SquareArrowUpRight,
   LayoutDashboard,
-  ChartBar,
-  Banknote,
-  Gauge,
-  GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -52,16 +48,6 @@ export const UserSidebarItems: NavGroup[] = [
         title: "Grade",
         url: "/examiner/grade/list",
         icon: LayoutDashboard,
-      },
-      {
-        title: "CRM",
-        url: "/examiner/crm",
-        icon: ChartBar,
-      },
-      {
-        title: "Finance",
-        url: "/examiner/finance",
-        icon: Banknote,
       },
     ],
   },
