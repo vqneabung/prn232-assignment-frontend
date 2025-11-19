@@ -1,28 +1,34 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, Users } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchAllClasses, fetchAllSubmissions } from "./handlers";
+import { fetchAllClasses, fetchAllSubmissions, fetchAllLecturers } from "./handlers";
 import type { ClassResponse, SubmissionResponse } from "@/types/type";
+import type { LecturerResponse } from "@/lib/api/lecturer/lecturer";
 
 export default function ManagerDashboard() {
+  const router = useRouter();
   const [classes, setClasses] = useState<ClassResponse[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionResponse[]>([]);
+  const [lecturers, setLecturers] = useState<LecturerResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [classesData, submissionsData] = await Promise.all([
+      const [classesData, submissionsData, lecturersData] = await Promise.all([
         fetchAllClasses(),
         fetchAllSubmissions(),
+        fetchAllLecturers(),
       ]);
       setClasses(classesData);
       setSubmissions(submissionsData);
+      setLecturers(lecturersData);
     } catch (error) {
       console.error("Error loading manager data:", error);
       toast.error("Failed to load manager dashboard data");
@@ -108,10 +114,22 @@ export default function ManagerDashboard() {
           <CardDescription>Common management tasks</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-3 md:grid-cols-2">
-            <Button variant="outline" className="w-full justify-start">
+          <div className="grid gap-3 md:grid-cols-3">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => router.push("/manager/classes")}
+            >
               <Plus className="mr-2 h-4 w-4" />
-              Assign Examiner
+              Manage Classes
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => router.push("/manager/lecturers")}
+            >
+              <Users className="mr-2 h-4 w-4" />
+              View Lecturers
             </Button>
             <Button variant="outline" className="w-full justify-start">
               <Plus className="mr-2 h-4 w-4" />
@@ -182,16 +200,45 @@ export default function ManagerDashboard() {
           <CardContent className="space-y-2 max-h-48 overflow-y-auto">
             {classes.length > 0 ? (
               classes.slice(0, 5).map((cls) => (
-                <div key={cls.classId} className="flex justify-between text-sm">
+                <button
+                  key={cls.classId}
+                  onClick={() => router.push(`/manager/classes/${cls.classId}`)}
+                  className="w-full flex justify-between text-sm p-2 rounded hover:bg-accent transition-colors text-left"
+                >
                   <span>{cls.className}</span>
                   <span className="text-muted-foreground">{cls.semester}</span>
-                </div>
+                </button>
               ))
             ) : (
               <p className="text-muted-foreground text-sm">No classes to display</p>
             )}
             {classes.length > 5 && (
               <p className="text-muted-foreground text-xs pt-2">+ {classes.length - 5} more classes</p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Lecturers
+            </CardTitle>
+            <CardDescription>Total: {lecturers.length}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2 max-h-48 overflow-y-auto">
+            {lecturers.length > 0 ? (
+              lecturers.slice(0, 5).map((lecturer) => (
+                <div key={lecturer.userId} className="flex justify-between text-sm">
+                  <span>{lecturer.userName}</span>
+                  <span className="text-muted-foreground text-xs">{lecturer.roleName ?? "Lecturer"}</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-muted-foreground text-sm">No lecturers to display</p>
+            )}
+            {lecturers.length > 5 && (
+              <p className="text-muted-foreground text-xs pt-2">+ {lecturers.length - 5} more lecturers</p>
             )}
           </CardContent>
         </Card>

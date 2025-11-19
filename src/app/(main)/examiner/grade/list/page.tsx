@@ -102,10 +102,20 @@ export default function GradeListPage() {
           <h1 className="text-3xl font-bold tracking-tight">Grade Submissions</h1>
           <p className="text-muted-foreground mt-2">Review and grade student submissions</p>
         </div>
-        <Button onClick={() => setIsUploadOpen(true)} className="gap-2">
-          <Upload className="h-4 w-4" />
-          Upload Submission
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => router.push("/examiner/grade/batch")}
+            variant="outline"
+            className="gap-2"
+          >
+            <Upload className="h-4 w-4" />
+            Batch Grading
+          </Button>
+          <Button onClick={() => setIsUploadOpen(true)} className="gap-2">
+            <Upload className="h-4 w-4" />
+            Upload Submission
+          </Button>
+        </div>
       </div>
 
       {/* Upload Dialog */}

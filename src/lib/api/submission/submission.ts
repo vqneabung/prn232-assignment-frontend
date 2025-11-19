@@ -52,4 +52,32 @@ export const submissionApi = {
   delete: async (id: number): Promise<BaseResponse<boolean>> => {
     return commonApiDelete(`${submissionBasePath}/${id}`, getBearerHeaders());
   },
+
+  batchGrading: async (
+    archiveFile: File,
+    ruleIds?: string,
+    defaultSemester?: string,
+    createClassIfNotExists?: boolean,
+    createStudentsIfNotExist?: boolean,
+  ): Promise<BaseResponse> => {
+    const formData = new FormData();
+    formData.append("ArchiveFile", archiveFile);
+    if (ruleIds) {
+      formData.append("RuleIds", ruleIds);
+    }
+    if (defaultSemester) {
+      formData.append("DefaultSemester", defaultSemester);
+    }
+    if (createClassIfNotExists !== undefined) {
+      formData.append("CreateClassIfNotExists", createClassIfNotExists.toString());
+    }
+    if (createStudentsIfNotExist !== undefined) {
+      formData.append("CreateStudentsIfNotExist", createStudentsIfNotExist.toString());
+    }
+    return commonApiPost(
+      `${submissionBasePath}/batch-grading`,
+      formData,
+      getBearerHeaders(),
+    );
+  },
 };

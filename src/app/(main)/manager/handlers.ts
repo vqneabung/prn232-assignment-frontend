@@ -8,7 +8,8 @@ import { ruleApi } from "@/lib/api/rule/rule";
 import { submissionApi } from "@/lib/api/submission/submission";
 import { plagiarismApi } from "@/lib/api/plagiarism/plagiarism";
 import { classApi } from "@/lib/api/class/class";
-import type { RuleResponse, RuleRequest, SubmissionResponse, PlagiarismCheckResult, ClassResponse } from "@/types/type";
+import { lecturerApi, type LecturerResponse } from "@/lib/api/lecturer/lecturer";
+import type { RuleResponse, RuleRequest, SubmissionResponse, PlagiarismCheckResult, ClassResponse, StudentResponse } from "@/types/type";
 
 /**
  * Fetch all classes for assignment management
@@ -23,6 +24,123 @@ export const fetchAllClasses = async (): Promise<ClassResponse[]> => {
   } catch (error) {
     console.error("Error fetching classes:", error);
     return [];
+  }
+};
+
+/**
+ * Fetch all lecturers for assignment management
+ */
+export const fetchAllLecturers = async (): Promise<LecturerResponse[]> => {
+  try {
+    const response = await lecturerApi.getAll();
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching lecturers:", error);
+    toast.error("Failed to fetch lecturers");
+    return [];
+  }
+};
+
+/**
+ * Fetch lecturer by ID
+ */
+export const fetchLecturerById = async (lecturerId: number): Promise<LecturerResponse | null> => {
+  try {
+    const response = await lecturerApi.getById(lecturerId);
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching lecturer:", error);
+    return null;
+  }
+};
+
+/**
+ * Fetch students in a class
+ */
+export const fetchStudentsInClass = async (classId: number): Promise<StudentResponse[]> => {
+  try {
+    const response = await classApi.getStudents(classId);
+    if (response.success && Array.isArray(response.data)) {
+      return response.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching students in class:", error);
+    toast.error("Failed to fetch class students");
+    return [];
+  }
+};
+
+/**
+ * Add student to class
+ */
+export const addStudentToClass = async (classId: number, studentId: number): Promise<boolean> => {
+  try {
+    const response = await classApi.addStudent(classId, studentId);
+    if (response.success) {
+      toast.success("Student added to class successfully");
+      return true;
+    }
+    toast.error(response.message ?? "Failed to add student to class");
+    return false;
+  } catch (error) {
+    console.error("Error adding student to class:", error);
+    toast.error("Failed to add student to class");
+    return false;
+  }
+};
+
+/**
+ * Remove student from class
+ */
+export const removeStudentFromClass = async (classId: number, studentId: number): Promise<boolean> => {
+  try {
+    const response = await classApi.removeStudent(classId, studentId);
+    if (response.success) {
+      toast.success("Student removed from class successfully");
+      return true;
+    }
+    toast.error(response.message ?? "Failed to remove student from class");
+    return false;
+  } catch (error) {
+    console.error("Error removing student from class:", error);
+    toast.error("Failed to remove student from class");
+    return false;
+  }
+};
+
+/**
+ * Check if class exists (by name and semester)
+ */
+export const checkClassExists = async (className: string, semester: string): Promise<boolean> => {
+  try {
+    const response = await classApi.checkExistence(className, semester);
+    return response.success ? true : false;
+  } catch (error) {
+    console.error("Error checking class existence:", error);
+    return false;
+  }
+};
+
+/**
+ * Fetch submission statistics for a student
+ */
+export const fetchStudentSubmissionStats = async (studentId: number) => {
+  try {
+    const response = await submissionApi.getStatistics(studentId);
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching submission statistics:", error);
+    return null;
   }
 };
 
@@ -237,127 +355,16 @@ export const deleteSubmission = async (submissionId: number): Promise<boolean> =
 };
 
 /**
- * Manager Assignment Handlers (Original mock handlers below for reference)
+ * Re-export violation and assignment handlers from separate file
+ * These are mock handlers that will be replaced with actual API endpoints
  */
+export {
+  handleAssignExaminers,
+  handleReassignExaminer,
+  handleRemoveExaminer,
+  handleReviewViolation,
+  handleResolveViolation,
+  handleQuickResolveViolation,
+  handleMarkViolationAsSpam,
+} from "./handlers-violations";
 
-export async function handleAssignExaminers(submissionIds: string[], examinerIds: string[]): Promise<void> {
-  try {
-    console.log("Assigning examiners to submissions", {
-      submissionIds,
-      examinerIds,
-    });
-
-    // TODO: Implement actual examiner assignment API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast.success(`Assigned ${examinerIds.length} examiners to ${submissionIds.length} submissions`);
-  } catch (error) {
-    console.error("Error assigning examiners:", error);
-    toast.error("Failed to assign examiners");
-  }
-}
-
-export async function handleReassignExaminer(
-  submissionId: string,
-  oldExaminerId: string,
-  newExaminerId: string,
-): Promise<void> {
-  try {
-    console.log("Reassigning examiner", {
-      submissionId,
-      oldExaminerId,
-      newExaminerId,
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    toast.success("Examiner reassigned successfully");
-  } catch (error) {
-    console.error("Error reassigning examiner:", error);
-    toast.error("Failed to reassign examiner");
-  }
-}
-
-export async function handleRemoveExaminer(submissionId: string, examinerId: string): Promise<void> {
-  try {
-    console.log("Removing examiner from submission", {
-      submissionId,
-      examinerId,
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    toast.success("Examiner removed from submission");
-  } catch (error) {
-    console.error("Error removing examiner:", error);
-    toast.error("Failed to remove examiner");
-  }
-}
-
-/**
- * Manager Violation Management Handlers
- */
-
-export async function handleReviewViolation(violationId: string): Promise<void> {
-  try {
-    console.log("Opening violation review for:", violationId);
-    toast.info("Opening violation details...");
-  } catch (error) {
-    console.error("Error reviewing violation:", error);
-    toast.error("Failed to load violation details");
-  }
-}
-
-export async function handleResolveViolation(violationId: string, action: "give_zero" | "dismiss"): Promise<void> {
-  try {
-    console.log("Resolving violation", { violationId, action });
-
-    // TODO: Replace with actual API call
-    // const response = await fetch(`/api/manager/violations/${violationId}`, {
-    //   method: "PATCH",
-    //   body: JSON.stringify({ action, status: "resolved" }),
-    // });
-
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    const actionLabel = action === "give_zero" ? "Zero points assigned" : "Violation dismissed";
-    toast.success(`${actionLabel}`);
-  } catch (error) {
-    console.error("Error resolving violation:", error);
-    toast.error("Failed to resolve violation");
-  }
-}
-
-export async function handleQuickResolveViolation(violationId: string, resolution: string): Promise<void> {
-  try {
-    console.log("Quick resolving violation", { violationId, resolution });
-
-    // TODO: Replace with actual API call
-    // const response = await fetch(`/api/manager/violations/${violationId}/quick-resolve`, {
-    //   method: "POST",
-    //   body: JSON.stringify({ resolution }),
-    // });
-
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    toast.success("Violation resolved quickly");
-  } catch (error) {
-    console.error("Error quick resolving violation:", error);
-    toast.error("Failed to resolve violation");
-  }
-}
-
-export async function handleMarkViolationAsSpam(violationId: string): Promise<void> {
-  try {
-    console.log("Marking violation as spam:", violationId);
-
-    // TODO: Replace with actual API call
-    // const response = await fetch(`/api/manager/violations/${violationId}/spam`, {
-    //   method: "PATCH",
-    // });
-
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    toast.success("Violation marked as spam and hidden");
-  } catch (error) {
-    console.error("Error marking violation as spam:", error);
-    toast.error("Failed to mark violation as spam");
-  }
-}

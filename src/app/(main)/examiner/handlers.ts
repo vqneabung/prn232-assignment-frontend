@@ -182,3 +182,47 @@ export const deleteSubmission = async (submissionId: number): Promise<boolean> =
     return false;
   }
 };
+
+/**
+ * Fetch submission statistics for a student
+ */
+export const fetchStudentSubmissionStats = async (studentId: number) => {
+  try {
+    const response = await submissionApi.getStatistics(studentId);
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching student submission statistics:", error);
+    return null;
+  }
+};
+
+/**
+ * Batch grading - upload archive file containing multiple student folders
+ */
+export const batchGrading = async (
+  archiveFile: File,
+  ruleIds?: string,
+  defaultSemester?: string,
+  createClassIfNotExists?: boolean,
+  createStudentsIfNotExist?: boolean,
+) => {
+  try {
+    const response = await submissionApi.batchGrading(
+      archiveFile,
+      ruleIds,
+      defaultSemester,
+      createClassIfNotExists,
+      createStudentsIfNotExist,
+    );
+    if (response.success && response.data) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error performing batch grading:", error);
+    return null;
+  }
+};
