@@ -2,7 +2,7 @@
 
 import { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Upload, Loader2 } from "lucide-react";
+import { Upload, Loader2, Shield, Database } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -103,6 +103,22 @@ export default function GradeListPage() {
           <p className="text-muted-foreground mt-2">Review and grade student submissions</p>
         </div>
         <div className="flex gap-2">
+          <Button
+            onClick={() => router.push("/examiner/plagiarism/store")}
+            variant="outline"
+            className="gap-2"
+          >
+            <Database className="h-4 w-4" />
+            Store Submission
+          </Button>
+          <Button
+            onClick={() => router.push("/examiner/plagiarism/check")}
+            variant="outline"
+            className="gap-2"
+          >
+            <Shield className="h-4 w-4" />
+            Check Plagiarism
+          </Button>
           <Button
             onClick={() => router.push("/examiner/grade/batch")}
             variant="outline"
